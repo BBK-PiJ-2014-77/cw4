@@ -8,17 +8,30 @@ import static org.junit.Assert.*;
 
 public class ContactImplTest {
 
-    private Contact somebody = new ContactImpl();
+
+
 
     @Test
     public void testGetId() {
-        int expected = 1;
+        Contact somebody = new ContactImpl( "John");
+        System.out.println(somebody.getId() +"first");
+        int expected = 0;
         int observed = somebody.getId();
         assertEquals(expected, observed);
+        Contact somebody2 = new ContactImpl( "Fred" );
+        System.out.println(somebody2.getId() + "second");
+        int expected2 = 1;
+        int observed2 = somebody2.getId();
+        assertEquals(expected2, observed2);
     }
 
     @Test
-    public void testGetName() throws Exception {
+    public void testGetName() {
+        Contact somebody3 = new ContactImpl( "Tony");
+        System.out.println(somebody3.getId() + "third");
+        String expected = "Tony";
+        String observed = somebody3.getName();
+        assertEquals(expected, observed);
 
     }
 
