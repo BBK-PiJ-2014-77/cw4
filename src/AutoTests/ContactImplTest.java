@@ -36,7 +36,7 @@ public class ContactImplTest {
     }
 
     @Test
-    public void testGetNotes() throws Exception {
+    public void testGetNotes() {
 
     }
 
