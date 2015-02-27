@@ -2,46 +2,62 @@ package AutoTests;
 
 import cw4.Contact;
 import Implementations.ContactImpl;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class ContactImplTest {
 
 
+    List<Integer> uniquecheck = new LinkedList<Integer>();
+
 
 
     @Test
     public void testGetId() {
-        Contact somebody = new ContactImpl( "John");
-        System.out.println(somebody.getId() +"first");
-        int expected = 0;
-        int observed = somebody.getId();
+        Contact somebody = new ContactImpl( "John", "");
+        boolean expected = false;
+        boolean observed = uniquecheck.contains(somebody.getId());
         assertEquals(expected, observed);
-        Contact somebody2 = new ContactImpl( "Fred" );
-        System.out.println(somebody2.getId() + "second");
-        int expected2 = 1;
-        int observed2 = somebody2.getId();
+        uniquecheck.add(somebody.getId());
+        boolean expected2 = true;
+        boolean observed2 = uniquecheck.contains(somebody.getId());
         assertEquals(expected2, observed2);
+        System.out.println(somebody.getId() + "first");
     }
 
     @Test
     public void testGetName() {
-        Contact somebody3 = new ContactImpl( "Tony");
-        System.out.println(somebody3.getId() + "third");
+        Contact somebody2 = new ContactImpl( "Tony", "");
+        uniquecheck.add(somebody2.getId());
         String expected = "Tony";
-        String observed = somebody3.getName();
+        String observed = somebody2.getName();
         assertEquals(expected, observed);
+        System.out.println(somebody2.getId() + "second");
 
     }
 
     @Test
     public void testGetNotes() {
-
+        Contact somebody3 = new ContactImpl( "Andrew", "Blah Blah");
+        uniquecheck.add(somebody3.getId());
+        String expected = "Blah Blah";
+        String observed = somebody3.getNotes();
+        assertEquals(expected, observed);
+        System.out.println(somebody3.getId() + "third");
     }
 
     @Test
-    public void testAddNotes() throws Exception {
-
+    public void testAddNotes() {
+        Contact somebody4 = new ContactImpl( "John", "");
+        somebody4.addNotes("Blah and more Blah");
+        String expected = ("Blah and more Blah");
+        String observed = somebody4.getNotes();
+        assertEquals(expected, observed);
+        System.out.println(somebody4.getId() + "fourth");
     }
 }
