@@ -4,6 +4,7 @@ import Implementations.ContactImpl;
 import Implementations.MeetingImpl;
 import cw4.Contact;
 import cw4.Meeting;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.time.DayOfWeek;
@@ -16,15 +17,20 @@ import static org.junit.Assert.*;
 
 public class MeetingImplTest {
 
-    List<Integer> uniquecheck = new LinkedList<Integer>();
+    Contact somebody = new ContactImpl("John", "");
+    Contact somebody2 = new ContactImpl("Pete", "");
+    private List<Integer> uniquecheck = new LinkedList<Integer>();
+    private Calendar cal = new GregorianCalendar();
+    Meeting M1 = new MeetingImpl(cal, somebody, somebody2 );
+
+    @Before
+    public void setup(){
+        cal.set(2015,1,2,12,13);
+
+    }
 
     @Test
     public void testGetId() {
-
-        Contact somebody = new ContactImpl("John", "");
-        Calendar cal = new GregorianCalendar();
-        cal.set(2015,1,2,12,13);
-        Meeting M1 = new MeetingImpl(cal, somebody );
         boolean expected = false;
         boolean observed = uniquecheck.contains(M1.getId());
         assertEquals(expected, observed);
@@ -41,7 +47,12 @@ public class MeetingImplTest {
     }
 
     @Test
-    public void testGetContacts() throws Exception {
-
+    public void testGetContacts() {
+        Contact[] returned = new ContactImpl[M1.getContacts().size()];
+        M1.getContacts().toArray(returned);
+        for (int i = 0 ; i < returned.length; i++){
+            System.out.println(returned[i].getName());
+            //WTF???
+        }
     }
 }
