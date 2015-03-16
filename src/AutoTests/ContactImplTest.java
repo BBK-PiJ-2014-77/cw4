@@ -38,7 +38,6 @@ public class ContactImplTest {
         String observed = somebody2.getName();
         assertEquals(expected, observed);
         System.out.println(somebody2.getId() + "second");
-
     }
 
     @Test

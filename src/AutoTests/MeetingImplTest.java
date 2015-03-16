@@ -20,12 +20,11 @@ public class MeetingImplTest {
     Contact somebody = new ContactImpl("John", "");
     Contact somebody2 = new ContactImpl("Pete", "");
     private List<Integer> uniquecheck = new LinkedList<Integer>();
-    private Calendar cal = new GregorianCalendar();
+    private Calendar cal = new GregorianCalendar(2015,1,2,12,13);
     Meeting M1 = new MeetingImpl(cal, somebody, somebody2 );
 
     @Before
     public void setup(){
-        cal.set(2015,1,2,12,13);
 
     }
 
@@ -42,8 +41,10 @@ public class MeetingImplTest {
     }
 
     @Test
-    public void testGetDate() throws Exception {
-
+    public void testGetDate() {
+        Calendar expected = new GregorianCalendar(2015, 1, 2, 12, 13);
+        Calendar observed = M1.getDate();
+        assertEquals(expected, observed);
     }
 
     @Test
