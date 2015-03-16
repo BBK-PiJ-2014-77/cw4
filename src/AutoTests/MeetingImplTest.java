@@ -49,11 +49,11 @@ public class MeetingImplTest {
 
     @Test
     public void testGetContacts() {
-        Contact[] returned = new ContactImpl[M1.getContacts().size()];
-        M1.getContacts().toArray(returned);
-        for (int i = 0 ; i < returned.length; i++){
-            System.out.println(returned[i].getName());
-            //WTF???
+        Contact[] observed = new ContactImpl[M1.getContacts().size()];
+        Contact[] expected = {somebody, somebody2};
+        M1.getContacts().toArray(observed);
+        for (int i = 0 ; i < expected.length; i++){
+            assertEquals(expected[i].getId(), observed[i].getId());
         }
     }
 }
