@@ -4,6 +4,8 @@ import Implementations.ContactImpl;
 import Implementations.ContactManagerImpl;
 import cw4.Contact;
 import cw4.ContactManager;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
@@ -13,8 +15,18 @@ import static org.junit.Assert.*;
 
 public class ContactManagerImplTest {
 
-    File filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
-    ContactManager CM = new ContactManagerImpl(filein);
+    static File filein;
+    static ContactManager CM;
+
+
+    @BeforeClass
+            public static void setup() {
+        filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
+        CM = new ContactManagerImpl(filein);
+    }
+
+
+
 
 
     /**
@@ -27,10 +39,23 @@ public class ContactManagerImplTest {
 
         Contact expected = new ContactImpl("Zed", "Zed's Dead");
         Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
-        System.out.println("CM is " + CM.getContacts("Zed").size() );
+      //  System.out.println("CM is " + CM.getContacts("Zed").size() );
         CM.getContacts("Zed").toArray(observed);
         assertEquals(expected.getName(), observed[0].getName());
 
+    }
+
+    /**
+     * Initial test to see whether Id is recorded from csv file
+     */
+
+    @Test
+    public void testReadId(){
+        int expected = 1;
+        Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
+        CM.getContacts("Zed").toArray(observed);
+        System.out.println(observed[0].getId());
+        assertEquals(expected, observed[0].getId());
     }
 
 /**

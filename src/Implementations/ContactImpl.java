@@ -20,6 +20,10 @@ public class ContactImpl implements Contact {
         this.notes = notes;
     }
 
+    public ContactImpl(int Id, String name, String notes){
+
+    }
+
     @Override
     public int getId() {
         return Id;

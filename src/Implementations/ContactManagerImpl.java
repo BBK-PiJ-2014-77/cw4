@@ -19,7 +19,51 @@ public class ContactManagerImpl implements ContactManager {
         ContactManagerFile = new File(Filename);
     }
 
+    /**
+     * Constructor with File input of a contactManager CSV file
+     * @param ContactManagerFile
+     */
+
     public ContactManagerImpl(File ContactManagerFile) {
+        this.ContactManagerFile =  ContactManagerFile;
+
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(ContactManagerFile));
+            String line;
+            while ((line = in.readLine()) != null) {
+          //      System.out.println(line + "11");
+          //      System.out.println(line.length());
+          //      System.out.println(line.charAt(0));
+                if (line.charAt(0) == 'C'){
+                    String[] split = new String[4];
+                    int i = 0;
+                    int j = 0;
+                    for (int k = 0; k < line.length(); k++) {
+
+                        if (line.charAt(k) == ',') {
+                            split[i] = line.substring(j, k);
+                            i++;
+                            j = k + 1;
+                        }
+                        if (i == 3){
+                            split[i] = line.substring(j, line.length());
+                            break;
+                        }
+                    }
+
+                    Contact con = new ContactImpl(split[2], split[3]);
+                //    System.out.println(con.getNotes());
+                    System.out.println(con.getName() +" " + con.getId());
+                    Contacts.add(con);
+                }
+            }
+            in.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("file does not exist");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -79,7 +123,16 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public Set<Contact> getContacts(String name) {
-       return null;
+        Set<Contact> reqContacts = new HashSet<Contact>();
+        for (int i = 0; i < Contacts.size(); i++ ){
+         //   System.out.println("getCon -" + Contacts.get(i).getName()+ "-");
+         //   System.out.println(name);
+            if (Contacts.get(i).getName().equals(name)){
+
+                reqContacts.add(Contacts.get(i));
+            }
+        }
+        return reqContacts;
     }
 
     @Override
