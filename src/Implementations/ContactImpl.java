@@ -2,8 +2,6 @@ package Implementations;
 
 import cw4.Contact;
 
-import java.io.Serializable;
-
 /**
  * Created by digibrose on 25/02/2015.
  */

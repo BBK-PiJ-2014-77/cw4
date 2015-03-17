@@ -1,7 +1,6 @@
 package Implementations;
 
 import cw4.Contact;
-import cw4.Meeting;
 import cw4.PastMeeting;
 
 import java.util.Calendar;

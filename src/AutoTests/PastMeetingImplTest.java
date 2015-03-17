@@ -1,10 +1,8 @@
 package AutoTests;
 
 import Implementations.ContactImpl;
-import Implementations.MeetingImpl;
 import Implementations.PastMeetingImpl;
 import cw4.Contact;
-import cw4.Meeting;
 import cw4.PastMeeting;
 import org.junit.Test;
 

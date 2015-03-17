@@ -7,12 +7,8 @@ import cw4.Meeting;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.*;
 
-import static java.time.Month.AUGUST;
 import static org.junit.Assert.*;
 
 public class MeetingImplTest {

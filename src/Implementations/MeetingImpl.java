@@ -6,7 +6,6 @@ import cw4.Meeting;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by digibrose on 26/02/2015.

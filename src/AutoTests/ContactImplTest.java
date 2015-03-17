@@ -2,7 +2,6 @@ package AutoTests;
 
 import cw4.Contact;
 import Implementations.ContactImpl;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;
