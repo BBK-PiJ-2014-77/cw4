@@ -34,7 +34,6 @@ public class ContactImpl implements Contact {
             IdList.add(0);
             System.out.println("New Id0 is " + this.Id);
         }
-
         for (int i = 0; i < j; i++) {
             if (i != IdList.get(i )) {
                 System.out.println("compare " + i + " " + IdList.get(i));
@@ -45,7 +44,7 @@ public class ContactImpl implements Contact {
             }
             if (i == j - 1) {
                 this.Id = IdList.size();
-                IdList.add(i+1);
+                IdList.add(j);
                 System.out.println("New Id2 is " + this.Id);
                 break;
             }
