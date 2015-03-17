@@ -19,10 +19,12 @@ public class ContactManagerImplTest {
     static ContactManager CM;
 
 
+
     @BeforeClass
             public static void setup() {
         filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
         CM = new ContactManagerImpl(filein);
+
     }
 
 
@@ -38,8 +40,9 @@ public class ContactManagerImplTest {
     public void testRead(){
 
         Contact expected = new ContactImpl("Zed", "Zed's Dead");
-        Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
+
       //  System.out.println("CM is " + CM.getContacts("Zed").size() );
+        Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
         CM.getContacts("Zed").toArray(observed);
         assertEquals(expected.getName(), observed[0].getName());
 
@@ -54,7 +57,6 @@ public class ContactManagerImplTest {
         int expected = 1;
         Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
         CM.getContacts("Zed").toArray(observed);
-        System.out.println(observed[0].getId());
         assertEquals(expected, observed[0].getId());
     }
 
@@ -104,10 +106,23 @@ public class ContactManagerImplTest {
 
     }
 
+ */
+
+    /**
+     * Since we added 1 and 2 to the record the first new contact should be 0 and then 3
+     */
+
     @Test
     public void testAddNewContact() {
+        CM.addNewContact("Harry", "Met Sally");
+        int expected = 0;
+        Contact[] observed = new ContactImpl[CM.getContacts("Harry").size()];
+        CM.getContacts("Harry").toArray(observed);
+        assertEquals(expected, observed[0].getId());
 
     }
+
+    /**
 
     @Test
     public void testGetContacts() {
@@ -123,6 +138,6 @@ public class ContactManagerImplTest {
     public void testFlush() {
 
     }
+*/
 
-    */
 }

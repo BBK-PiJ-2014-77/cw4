@@ -22,7 +22,11 @@ public class ContactImpl implements Contact {
      //   NextId = NextId + 1;
         this.name = name;
         this.notes = notes;
-        System.out.println("here list size is " + IdList.size());
+     //   System.out.println("here list size is " + IdList.size());
+
+        /**
+         * code to assign a unique Id using a static linked list
+         */
         int j = 0;
         for (int i = 0; i < IdList.size(); i++) {
             if (i != IdList.get(i)) {
@@ -40,6 +44,19 @@ public class ContactImpl implements Contact {
 
 
     public ContactImpl(int Id, String name, String notes){
+        this.name = name;
+        this.notes = notes;
+
+        if (!IdList.contains(Id)){
+            this.Id = Id;
+            for (int i = 0; i < IdList.size();i++){
+                if (IdList.get(i) > Id){
+                    IdList.add(i-1, Id);
+                    break;
+                }
+            }
+        }
+
 
     }
 

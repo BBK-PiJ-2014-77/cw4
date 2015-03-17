@@ -50,8 +50,8 @@ public class ContactManagerImpl implements ContactManager {
                             break;
                         }
                     }
-
-                    Contact con = new ContactImpl(split[2], split[3]);
+                    int conId = Integer.parseInt(split[1]);
+                    Contact con = new ContactImpl(conId, split[2], split[3]);
                 //    System.out.println(con.getNotes());
                     System.out.println(con.getName() +" " + con.getId());
                     Contacts.add(con);
