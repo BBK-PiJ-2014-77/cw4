@@ -29,8 +29,15 @@ public class ContactImpl implements Contact {
          */
         int j = IdList.size();
         System.out.println("present size is " + IdList.size());
+        if (IdList.isEmpty()){
+            this.Id = 0;
+            IdList.add(0);
+            System.out.println("New Id0 is " + this.Id);
+        }
+
         for (int i = 0; i < j; i++) {
-            if (i != IdList.get(i)) {
+            if (i != IdList.get(i )) {
+                System.out.println("compare " + i + " " + IdList.get(i));
                 this.Id = i;
                 IdList.add(i, i);
                 System.out.println("New Id is " + this.Id);
@@ -38,10 +45,11 @@ public class ContactImpl implements Contact {
             }
             if (i == j - 1) {
                 this.Id = IdList.size();
-                IdList.add(i);
+                IdList.add(i+1);
                 System.out.println("New Id2 is " + this.Id);
                 break;
             }
+
         }
     }
 
