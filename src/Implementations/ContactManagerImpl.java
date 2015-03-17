@@ -113,6 +113,8 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public void addNewContact(String name, String notes) {
+        Contact NewContact = new ContactImpl(name, notes);
+        Contacts.add(NewContact);
 
     }
 

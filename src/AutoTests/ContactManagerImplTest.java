@@ -39,12 +39,12 @@ public class ContactManagerImplTest {
     @Test
     public void testRead(){
 
-        Contact expected = new ContactImpl("Zed", "Zed's Dead");
+       int expected = 1;
 
       //  System.out.println("CM is " + CM.getContacts("Zed").size() );
         Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
         CM.getContacts("Zed").toArray(observed);
-        assertEquals(expected.getName(), observed[0].getName());
+        assertEquals(expected, observed[0].getId());
 
     }
 
@@ -106,11 +106,13 @@ public class ContactManagerImplTest {
 
     }
 
- */
+
 
     /**
      * Since we added 1 and 2 to the record the first new contact should be 0 and then 3
      */
+
+
 
     @Test
     public void testAddNewContact() {
@@ -119,10 +121,15 @@ public class ContactManagerImplTest {
         Contact[] observed = new ContactImpl[CM.getContacts("Harry").size()];
         CM.getContacts("Harry").toArray(observed);
         assertEquals(expected, observed[0].getId());
+        CM.addNewContact("John", "Being John M");
+        int expected2 = 3;
+        Contact[] observed2 = new ContactImpl[CM.getContacts("John").size()];
+        CM.getContacts("John").toArray(observed2);
+        assertEquals(expected2, observed2[0].getId());
 
     }
 
-    /**
+/**
 
     @Test
     public void testGetContacts() {
@@ -138,6 +145,6 @@ public class ContactManagerImplTest {
     public void testFlush() {
 
     }
-*/
 
+*/
 }
