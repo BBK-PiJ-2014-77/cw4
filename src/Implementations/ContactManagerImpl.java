@@ -208,7 +208,19 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public Set<Contact> getContacts(int... ids) {
-        return null;
+
+        Set<Integer> idset = new HashSet<Integer>();
+        for (Integer item : ids ) {
+            idset.add(item);
+        }
+        Set<Contact> getConReturn = new HashSet<Contact>();
+        for (int i=0; i<Contacts.size();i++){
+            if (idset.contains(Contacts.get(i).getId())){
+                getConReturn.add(Contacts.get(i));
+            }
+        }
+
+        return getConReturn;
     }
 
     @Override
