@@ -117,13 +117,15 @@ public class ContactManagerImplTest {
         assertEquals(expected, observed);
     }
 
-/**
+
 
     @Test
     public void testGetMeeting() {
-
+        int expected = 1;
+        int observed =CM.getMeeting(1).getId();
+        assertEquals(expected, observed);
     }
-
+/**
     @Test
     public void testGetFutureMeetingList() {
 
