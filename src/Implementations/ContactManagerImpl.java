@@ -53,7 +53,7 @@ public class ContactManagerImpl implements ContactManager {
                     Contact con = new ContactImpl(conId, split[2], split[3]);
                     System.out.println(con.getName() +" " + con.getId());
                     Contacts.add(con);
-                    System.out.println("inputId " + con.getId());
+              //      System.out.println("inputId " + con.getId());
                 }
                 /**
                  * code to extract Meetings
@@ -124,7 +124,8 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public PastMeeting getPastMeeting(int id) {
-        return null;
+        PastMeeting PM = (PastMeetingImpl) Meetings.get(id);
+        return PM;
     }
 
     @Override

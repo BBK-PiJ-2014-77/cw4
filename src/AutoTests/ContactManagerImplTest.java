@@ -109,14 +109,15 @@ public class ContactManagerImplTest {
         assertEquals(expected, observed);
     }
 
-    /**
 
     @Test
     public void testGetPastMeeting() {
-
+        int expected = 1;
+        int observed =CM.getPastMeeting(1).getId();
+        assertEquals(expected, observed);
     }
 
-
+/**
 
     @Test
     public void testGetMeeting() {
