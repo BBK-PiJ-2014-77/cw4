@@ -184,6 +184,10 @@ public class ContactManagerImpl implements ContactManager {
     @Override
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 
+        Contact[] PMContacts = ContactGetter.ConGet(contacts);
+        Meeting NPM = new PastMeetingImpl(date, text, PMContacts);
+        Meetings.add(NPM);
+
     }
 
     @Override

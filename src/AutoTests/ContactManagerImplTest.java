@@ -85,8 +85,7 @@ public class ContactManagerImplTest {
 
     @Test
     public void testAddFutureMeeting() {
-        Set<Contact> contacts = new HashSet<Contact>();
-        contacts = CM.getContacts("Zed");
+        Set<Contact> contacts = CM.getContacts("Zed");
         Contact[] Gordadd = ContactGetter.ConGet(CM.getContacts("Gordon"));
         contacts.add(Gordadd[0]);
         Calendar cal = new GregorianCalendar(2015,11, 2, 14, 30);
@@ -142,22 +141,31 @@ public class ContactManagerImplTest {
     @Test
     public void testGetPastMeetingList() {
         int expected = 1;
-        int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).size();
+        int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Gordon"))[0]).size();
         assertEquals(expected, observed);
     //    System.out.println(CM.getContacts("Zed").size());
     }
 
-    /**
+
 
     @Test
     public void testAddNewPastMeeting() {
-
+        Set<Contact> contacts = CM.getContacts("Zed");
+        Calendar cal = new GregorianCalendar(2014,10, 2, 14, 30);
+        int expected = 2;
+        CM.addNewPastMeeting(contacts, cal, "");
+        int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).size();
+        assertEquals(expected, observed);
     }
 
 
 
     @Test
     public void testAddMeetingNotes() {
+        String expected = "TaDah";
+        CM.addMeetingNotes(1, "TaDah");
+        String observed = CM.getPastMeeting(1).getNotes();
+        assertEquals(expected, observed);
 
     }
 
