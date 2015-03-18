@@ -11,10 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -125,10 +122,13 @@ public class ContactManagerImplTest {
         int observed =CM.getMeeting(1).getId();
         assertEquals(expected, observed);
     }
-/**
+
     @Test
     public void testGetFutureMeetingList() {
-
+        Calendar cal = new GregorianCalendar(2015, 11, 2);
+        int expected = 1;
+        int observed = CM.getFutureMeetingList(cal).size();
+        assertEquals(expected, observed);
     }
 
     @Test

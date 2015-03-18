@@ -138,7 +138,7 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public Meeting getMeeting(int id) {
-        return null;
+        return Meetings.get(id);
     }
 
     @Override
@@ -148,7 +148,16 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public List<Meeting> getFutureMeetingList(Calendar date) {
-        return null;
+        List<Meeting> FutureMeetingsList = new LinkedList<Meeting>();
+        boolean sameday;
+        for (int i=0; i < Meetings.size(); i++){
+            sameday = Meetings.get(i).getDate().getWeekYear() == date.getWeekYear() && Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR);
+            System.out.println("Sameday is " +  Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR));
+            if (sameday){
+                FutureMeetingsList.add(Meetings.get(i));
+            }
+        }
+        return FutureMeetingsList;
     }
 
     @Override
