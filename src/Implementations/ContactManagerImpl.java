@@ -143,7 +143,15 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public List<Meeting> getFutureMeetingList(Contact contact) {
-        return null;
+        List<Meeting> FutureMeetingList = new LinkedList<Meeting>();
+
+        for (int i=0;i< Meetings.size();i++){
+            if (Meetings.get(i).getContacts().contains(contact) && Meetings.get(i).getDate().after(Calendar.getInstance())){
+                FutureMeetingList.add(Meetings.get(i));
+            }
+        }
+
+        return FutureMeetingList;
     }
 
     @Override

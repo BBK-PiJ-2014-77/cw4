@@ -154,6 +154,8 @@ public class ContactManagerImplTest {
 
     }
 
+
+
     @Test
     public void testAddMeetingNotes() {
 
