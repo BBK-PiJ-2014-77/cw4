@@ -152,7 +152,7 @@ public class ContactManagerImpl implements ContactManager {
         boolean sameday;
         for (int i=0; i < Meetings.size(); i++){
             sameday = Meetings.get(i).getDate().getWeekYear() == date.getWeekYear() && Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR);
-            System.out.println("Sameday is " +  Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR));
+            System.out.println("Sameday is " + Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR));
             if (sameday){
                 FutureMeetingsList.add(Meetings.get(i));
             }
@@ -162,7 +162,15 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public List<PastMeeting> getPastMeetingList(Contact contact) {
-        return null;
+        List<PastMeeting> PastMeetingList = new LinkedList<PastMeeting>();
+
+        for (int i=0;i< Meetings.size();i++){
+            if (Meetings.get(i).getContacts().contains(contact) && Meetings.get(i).getDate().before(Calendar.getInstance())){
+                PastMeetingList.add((PastMeeting) Meetings.get(i));
+            }
+        }
+
+        return PastMeetingList;
     }
 
     @Override

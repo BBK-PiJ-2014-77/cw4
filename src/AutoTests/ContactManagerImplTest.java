@@ -138,8 +138,13 @@ public class ContactManagerImplTest {
 
     @Test
     public void testGetPastMeetingList() {
-
+        int expected = 1;
+        int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).get(0).getId();
+        assertEquals(expected, observed);
+    //    System.out.println(CM.getContacts("Zed").size());
     }
+
+    /**
 
     @Test
     public void testAddNewPastMeeting() {
