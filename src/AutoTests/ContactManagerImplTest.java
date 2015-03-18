@@ -173,12 +173,18 @@ public class ContactManagerImplTest {
 
 
 
-/**
+
 
     @Test
     public void testGetContacts() {
 
+        int expected = 2;
+        int observed = CM.getContacts(1, 2).size();
+        assertEquals(expected, observed);
+
     }
+
+    /**
 
     @Test
     public void testGetContacts1() {
