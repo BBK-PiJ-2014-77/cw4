@@ -68,7 +68,9 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-        return 0;
+        Contact[] MeetCon = ContactGetter.ConGet(contacts);
+        Meeting NewFMeet = new FutureMeetingsImpl(date, MeetCon );
+        return 1;
     }
 
     @Override

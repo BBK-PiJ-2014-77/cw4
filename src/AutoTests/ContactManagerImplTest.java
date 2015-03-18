@@ -1,5 +1,6 @@
 package AutoTests;
 
+import Implementations.ContactGetter;
 import Implementations.ContactImpl;
 import Implementations.ContactManagerImpl;
 import cw4.Contact;
@@ -9,6 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -26,10 +30,6 @@ public class ContactManagerImplTest {
         CM = new ContactManagerImpl(filein);
 
     }
-
-
-
-
 
     /**
      * Initial tests to show successful reading of csv file with 2 contacts and 1 meeting which need to be initialised
@@ -60,11 +60,40 @@ public class ContactManagerImplTest {
         assertEquals(expected, observed[0].getId());
     }
 
-/**
+    /**
+     * Since we added 1 and 2 to the record the first new contact should be 0 and then 3
+     */
+
     @Test
-    public void testAddFutureMeeting() {
+    public void testAddNewContact() {
+        CM.addNewContact("Harry", "Met Sally");
+        int expected = 0;
+        Contact[] observed = new ContactImpl[CM.getContacts("Harry").size()];
+        CM.getContacts("Harry").toArray(observed);
+        assertEquals(expected, observed[0].getId());
+        CM.addNewContact("John", "Being John M");
+        int expected2 = 3;
+        Contact[] observed2 = ContactGetter.ConGet(CM.getContacts("John"));
+       // Contact[] observed2 = new ContactImpl[CM.getContacts("John").size()];
+       // CM.getContacts("John").toArray(observed2);
+        assertEquals(expected2, observed2[0].getId());
 
     }
+
+
+    @Test
+    public void testAddFutureMeeting() {
+        Set<Contact> contacts = new HashSet<Contact>();
+        contacts = CM.getContacts("Zed");
+        Contact[] Gordadd = ContactGetter.ConGet(CM.getContacts("Gordon"));
+        contacts.add(Gordadd[0]);
+        Calendar cal = new GregorianCalendar(2015,11, 2, 14, 30);
+        int expected = 1;
+        int observed = CM.addFutureMeeting(contacts, cal);
+        assertEquals(expected, observed);
+    }
+
+    /**
 
     @Test
     public void testGetPastMeeting() {
@@ -108,26 +137,7 @@ public class ContactManagerImplTest {
 
 
 
-    /**
-     * Since we added 1 and 2 to the record the first new contact should be 0 and then 3
-     */
 
-
-
-    @Test
-    public void testAddNewContact() {
-        CM.addNewContact("Harry", "Met Sally");
-        int expected = 0;
-        Contact[] observed = new ContactImpl[CM.getContacts("Harry").size()];
-        CM.getContacts("Harry").toArray(observed);
-        assertEquals(expected, observed[0].getId());
-        CM.addNewContact("John", "Being John M");
-        int expected2 = 3;
-        Contact[] observed2 = new ContactImpl[CM.getContacts("John").size()];
-        CM.getContacts("John").toArray(observed2);
-        assertEquals(expected2, observed2[0].getId());
-
-    }
 
 /**
 
