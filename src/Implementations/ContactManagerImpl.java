@@ -94,8 +94,14 @@ public class ContactManagerImpl implements ContactManager {
                             }
                         }
                     }
-                    Meeting Meet = new FutureMeetingsImpl(cal, ContactMeet);
-                    Meetings.add(Meet);
+                    if (cal.after(Calendar.getInstance())) {
+                        Meeting Meet = new FutureMeetingsImpl(cal, ContactMeet);
+                        Meetings.add(Meet);
+                    }
+                    else{
+                        Meeting Meet = new PastMeetingImpl(cal, "", ContactMeet);
+                        Meetings.add(Meet);
+                    }
                     //  System.out.println(con.getName() +" " + con.getId());
                     //  Contacts.add(con);
                 }
