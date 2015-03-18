@@ -13,12 +13,12 @@ import java.util.Set;
  */
 public class MeetingImpl implements Meeting {
 
-    private Set<Contact> ContactPresent = new HashSet<Contact>();
+    protected Set<Contact> ContactPresent = new HashSet<Contact>();
  //   private  static int MeetingCounter;
-    private int Id;
-    private Calendar date;
+    protected int Id;
+    protected Calendar date;
 
-    static LinkedList<Integer> IdList = new LinkedList<Integer>();
+    protected static LinkedList<Integer> IdList = new LinkedList<Integer>();
 
     public MeetingImpl(Calendar date, Contact... present){
         this.date = date;

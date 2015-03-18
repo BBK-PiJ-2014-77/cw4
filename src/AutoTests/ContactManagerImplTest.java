@@ -5,6 +5,7 @@ import Implementations.ContactImpl;
 import Implementations.ContactManagerImpl;
 import cw4.Contact;
 import cw4.ContactManager;
+import cw4.Meeting;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -80,6 +81,10 @@ public class ContactManagerImplTest {
 
     }
 
+    /**
+     * Basic test of AddFuture Meeting return value
+     */
+
 
     @Test
     public void testAddFutureMeeting() {
@@ -94,16 +99,24 @@ public class ContactManagerImplTest {
     }
 
     /**
+     * Test of GetFuture Meeting which should take a meeting Id and then return that future meeting
+     */
+
+    @Test
+    public void testGetFutureMeeting() {
+        int expected = 0;
+        int observed =CM.getFutureMeeting(0).getId();
+        assertEquals(expected, observed);
+    }
+
+    /**
 
     @Test
     public void testGetPastMeeting() {
 
     }
 
-    @Test
-    public void testGetFutureMeeting() {
 
-    }
 
     @Test
     public void testGetMeeting() {

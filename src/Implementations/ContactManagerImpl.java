@@ -11,8 +11,8 @@ import java.util.*;
 public class ContactManagerImpl implements ContactManager {
 
     private File ContactManagerFile;
-    private LinkedList<Contact> Contacts = new LinkedList<Contact>();
-    private LinkedList<ContactImpl> Meetings = new LinkedList<ContactImpl>();
+    private List<Contact> Contacts = new LinkedList<Contact>();
+    private List<Meeting> Meetings = new LinkedList<Meeting>();
 
     public ContactManagerImpl(){
         String Filename = "ContactManagerFile";
@@ -31,15 +31,14 @@ public class ContactManagerImpl implements ContactManager {
             BufferedReader in = new BufferedReader(new FileReader(ContactManagerFile));
             String line;
             while ((line = in.readLine()) != null) {
-          //      System.out.println(line + "11");
-          //      System.out.println(line.length());
-          //      System.out.println(line.charAt(0));
+                /**
+                 * code to extract Contacts
+                 */
                 if (line.charAt(0) == 'C'){
                     String[] split = new String[4];
                     int i = 0;
                     int j = 0;
                     for (int k = 0; k < line.length(); k++) {
-
                         if (line.charAt(k) == ',') {
                             split[i] = line.substring(j, k);
                             i++;
@@ -52,9 +51,53 @@ public class ContactManagerImpl implements ContactManager {
                     }
                     int conId = Integer.parseInt(split[1]);
                     Contact con = new ContactImpl(conId, split[2], split[3]);
-                //    System.out.println(con.getNotes());
                     System.out.println(con.getName() +" " + con.getId());
                     Contacts.add(con);
+                    System.out.println("inputId " + con.getId());
+                }
+                /**
+                 * code to extract Meetings
+                 */
+                if (line.charAt(0) == 'M'){
+                    String[] split = new String[4];
+                    int i = 0;
+                    int j = 0;
+                    for (int k = 0; k < line.length(); k++) {
+                        if (line.charAt(k) == ',') {
+                            split[i] = line.substring(j, k);
+                            i++;
+                            j = k + 1;
+                        }
+                        if (i == 3){
+                            split[i] = line.substring(j, line.length());
+                            break;
+                        }
+                    }
+                    int conId = Integer.parseInt(split[1]);
+                    String[] date = new String[5];
+                    date = split[2].split("-");
+                    int[] cdate = new int[5];
+                    for (int k = 0; k < date.length; k++) {
+                        cdate[k] = Integer.parseInt(date[k]);
+                    }
+                    Calendar cal = new GregorianCalendar(cdate[0], cdate[1], cdate[2], cdate[3], cdate[4]);
+                    String[] conmeet = new String[(split[3].length()+1)/2];
+                    conmeet = split[3].split(" ");
+                    int[] conmeetint = new int[conmeet.length];
+                    Contact[] ContactMeet = new ContactImpl[conmeet.length];
+                    for (int l=0; l<conmeet.length; l++){
+                        conmeetint[l] = Integer.parseInt(conmeet[l]);
+                        for (int m = 0; m < Contacts.size();m++){
+                            if (conmeetint[l] == Contacts.get(l).getId()){
+                                ContactMeet[l] = Contacts.get(l);
+                                break;
+                            }
+                        }
+                    }
+                    Meeting Meet = new FutureMeetingsImpl(cal, ContactMeet);
+                    Meetings.add(Meet);
+                    //  System.out.println(con.getName() +" " + con.getId());
+                    //  Contacts.add(con);
                 }
             }
             in.close();
@@ -80,7 +123,10 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public FutureMeeting getFutureMeeting(int id) {
-        return null;
+
+
+        FutureMeeting FM = (FutureMeetingsImpl) Meetings.get(id);
+        return FM;
     }
 
     @Override
