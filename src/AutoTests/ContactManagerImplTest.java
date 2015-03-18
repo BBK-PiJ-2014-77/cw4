@@ -133,13 +133,16 @@ public class ContactManagerImplTest {
 
     @Test
     public void testGetFutureMeetingList1() {
+        int expected = 1;
+        int observed = CM.getFutureMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).size();
+        assertEquals(expected, observed);
 
     }
 
     @Test
     public void testGetPastMeetingList() {
         int expected = 1;
-        int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).get(0).getId();
+        int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).size();
         assertEquals(expected, observed);
     //    System.out.println(CM.getContacts("Zed").size());
     }
