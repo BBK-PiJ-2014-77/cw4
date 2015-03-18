@@ -18,8 +18,19 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
         this.Notes = Notes;
     }
 
+    public PastMeetingImpl(int id, Calendar date, String Notes, Contact... present){
+        super(date, present);
+        this.Notes = Notes;
+        this.Id = id;
+    }
+
     @Override
     public String getNotes() {
         return Notes;
     }
+
+
+  //  public void addNotes(String notes) {
+  //      this.Notes = notes;
+  //  }
 }

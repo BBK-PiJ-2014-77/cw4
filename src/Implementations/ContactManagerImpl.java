@@ -192,7 +192,11 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public void addMeetingNotes(int id, String text) {
-
+            for (int i = 0; i<Meetings.size();i++){
+                if (Meetings.get(i).getId() == id){
+                    Meetings.set(i, new PastMeetingImpl(Meetings.get(i).getId(), Meetings.get(i).getDate(), text, ContactGetter.ConGet(Meetings.get(i).getContacts())));
+                }
+            }
     }
 
     @Override

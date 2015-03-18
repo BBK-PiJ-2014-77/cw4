@@ -160,7 +160,7 @@ public class ContactManagerImplTest {
 
 
 
-    @Test
+   @Test
     public void testAddMeetingNotes() {
         String expected = "TaDah";
         CM.addMeetingNotes(1, "TaDah");
