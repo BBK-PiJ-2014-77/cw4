@@ -73,7 +73,7 @@ public class ContactManagerImpl implements ContactManager {
                             break;
                         }
                     }
-                    int conId = Integer.parseInt(split[1]);
+                    int MId = Integer.parseInt(split[1]);
                     String[] date = new String[5];
                     date = split[2].split("-");
                     int[] cdate = new int[5];
@@ -95,11 +95,11 @@ public class ContactManagerImpl implements ContactManager {
                         }
                     }
                     if (cal.after(Calendar.getInstance())) {
-                        Meeting Meet = new FutureMeetingsImpl(cal, ContactMeet);
+                        Meeting Meet = new FutureMeetingsImpl(MId, cal, ContactMeet);
                         Meetings.add(Meet);
                     }
                     else{
-                        Meeting Meet = new PastMeetingImpl(cal, "", ContactMeet);
+                        Meeting Meet = new PastMeetingImpl(MId, cal, "", ContactMeet);
                         Meetings.add(Meet);
                     }
                     //  System.out.println(con.getName() +" " + con.getId());
@@ -239,6 +239,25 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public void flush() {
+
+        File file = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager2.csv");
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(file);
+            for (int i = 0; i < Contacts.size(); i++) {
+                int id = Contacts.get(i).getId();
+                String name = Contacts.get(i).getName();
+                String notes = Contacts.get(i).getNotes();
+                out.println("C," + id + "," + name + "," + notes);
+
+            }
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            out.close();
+        }
+
 
     }
 }

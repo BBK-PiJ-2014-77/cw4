@@ -14,4 +14,10 @@ public class FutureMeetingsImpl extends MeetingImpl implements FutureMeeting, Me
     public FutureMeetingsImpl(Calendar date, Contact... present) {
         super(date, present);
     }
+
+    public FutureMeetingsImpl(int id, Calendar date, Contact... present){
+        super(date, present);
+        this.Id = id;
+    }
+
 }

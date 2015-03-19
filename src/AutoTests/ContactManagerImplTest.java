@@ -21,9 +21,8 @@ public class ContactManagerImplTest {
     static ContactManager CM;
 
 
-
     @BeforeClass
-            public static void setup() {
+    public static void setup() {
         filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
         CM = new ContactManagerImpl(filein);
 
@@ -35,11 +34,11 @@ public class ContactManagerImplTest {
      */
 
     @Test
-    public void testRead(){
+    public void testRead() {
 
-       int expected = 1;
+        int expected = 1;
 
-      //  System.out.println("CM is " + CM.getContacts("Zed").size() );
+        //  System.out.println("CM is " + CM.getContacts("Zed").size() );
         Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
         CM.getContacts("Zed").toArray(observed);
         assertEquals(expected, observed[0].getId());
@@ -51,7 +50,7 @@ public class ContactManagerImplTest {
      */
 
     @Test
-    public void testReadId(){
+    public void testReadId() {
         int expected = 1;
         Contact[] observed = new ContactImpl[CM.getContacts("Zed").size()];
         CM.getContacts("Zed").toArray(observed);
@@ -72,8 +71,8 @@ public class ContactManagerImplTest {
         CM.addNewContact("John", "Being John M");
         int expected2 = 3;
         Contact[] observed2 = ContactGetter.ConGet(CM.getContacts("John"));
-       // Contact[] observed2 = new ContactImpl[CM.getContacts("John").size()];
-       // CM.getContacts("John").toArray(observed2);
+        // Contact[] observed2 = new ContactImpl[CM.getContacts("John").size()];
+        // CM.getContacts("John").toArray(observed2);
         assertEquals(expected2, observed2[0].getId());
 
     }
@@ -88,7 +87,7 @@ public class ContactManagerImplTest {
         Set<Contact> contacts = CM.getContacts("Zed");
         Contact[] Gordadd = ContactGetter.ConGet(CM.getContacts("Gordon"));
         contacts.add(Gordadd[0]);
-        Calendar cal = new GregorianCalendar(2015,11, 2, 14, 30);
+        Calendar cal = new GregorianCalendar(2015, 11, 2, 14, 30);
         int expected = 1;
         int observed = CM.addFutureMeeting(contacts, cal);
         assertEquals(expected, observed);
@@ -101,7 +100,7 @@ public class ContactManagerImplTest {
     @Test
     public void testGetFutureMeeting() {
         int expected = 0;
-        int observed =CM.getFutureMeeting(0).getId();
+        int observed = CM.getFutureMeeting(0).getId();
         assertEquals(expected, observed);
     }
 
@@ -109,16 +108,15 @@ public class ContactManagerImplTest {
     @Test
     public void testGetPastMeeting() {
         int expected = 1;
-        int observed =CM.getPastMeeting(1).getId();
+        int observed = CM.getPastMeeting(1).getId();
         assertEquals(expected, observed);
     }
-
 
 
     @Test
     public void testGetMeeting() {
         int expected = 1;
-        int observed =CM.getMeeting(1).getId();
+        int observed = CM.getMeeting(1).getId();
         assertEquals(expected, observed);
     }
 
@@ -143,15 +141,14 @@ public class ContactManagerImplTest {
         int expected = 1;
         int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Gordon"))[0]).size();
         assertEquals(expected, observed);
-    //    System.out.println(CM.getContacts("Zed").size());
+        //    System.out.println(CM.getContacts("Zed").size());
     }
-
 
 
     @Test
     public void testAddNewPastMeeting() {
         Set<Contact> contacts = CM.getContacts("Zed");
-        Calendar cal = new GregorianCalendar(2014,10, 2, 14, 30);
+        Calendar cal = new GregorianCalendar(2014, 10, 2, 14, 30);
         int expected = 2;
         CM.addNewPastMeeting(contacts, cal, "");
         int observed = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts("Zed"))[0]).size();
@@ -159,8 +156,7 @@ public class ContactManagerImplTest {
     }
 
 
-
-   @Test
+    @Test
     public void testAddMeetingNotes() {
         String expected = "TaDah";
         CM.addMeetingNotes(1, "TaDah");
@@ -168,11 +164,6 @@ public class ContactManagerImplTest {
         assertEquals(expected, observed);
 
     }
-
-
-
-
-
 
 
     @Test
@@ -184,17 +175,36 @@ public class ContactManagerImplTest {
 
     }
 
-    /**
 
     @Test
     public void testGetContacts1() {
-
+        int expected = 1;
+        int observed = CM.getContacts("Zed").size();
+        assertEquals(expected, observed);
     }
 
     @Test
     public void testFlush() {
-
+     //   CM.addNewContact("Harry", "Met Sally");
+        CM.flush();
+        File Filein2 = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager2.csv");
+        boolean linechecker = false;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(Filein2));
+            String line;
+            linechecker = true;
+            while ((line = in.readLine()) != null) {
+                if (!(line.charAt(0) == 'M' || line.charAt(0) == 'C')) {
+                    linechecker = false;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        boolean expected = true;
+        boolean observed = linechecker;
+        assertEquals(expected, observed);
     }
-
-*/
 }
