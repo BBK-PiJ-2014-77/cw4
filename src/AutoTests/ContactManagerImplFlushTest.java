@@ -31,6 +31,7 @@ public class ContactManagerImplFlushTest {
     @Test
     public void testTestFlush() {
         CM.addNewContact("Harry", "Met Sally");
+        CM.addNewContact("Ben", "Bill and Ben");
         Set<Contact> FC = new HashSet<Contact>();
         FC.add(ContactGetter.ConGet(CM.getContacts("Zed"))[0]);
         FC.add(ContactGetter.ConGet(CM.getContacts("Gordon"))[0]);
@@ -38,7 +39,8 @@ public class ContactManagerImplFlushTest {
         Calendar Cal = new GregorianCalendar(2015, 5, 14, 12, 15);
         CM.addFutureMeeting(FC, Cal);
         Calendar Cal2 = new GregorianCalendar(2014, 3, 12, 13, 30);
-        CM.addNewPastMeeting(FC, Cal2, " ");
+        CM.addNewPastMeeting(FC, Cal2, "");
+        CM.addMeetingNotes(1, "Notes Test");
    //     CM.addMeetingNotes(CM.);
         CM.flush();
         File Filein2 = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager2.csv");

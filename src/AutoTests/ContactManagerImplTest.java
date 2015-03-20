@@ -122,7 +122,7 @@ public class ContactManagerImplTest {
 
     @Test
     public void testGetFutureMeetingList() {
-        Calendar cal = new GregorianCalendar(2015, 11, 2);
+        Calendar cal = new GregorianCalendar(2015, 7, 2);
         int expected = 1;
         int observed = CM.getFutureMeetingList(cal).size();
         assertEquals(expected, observed);

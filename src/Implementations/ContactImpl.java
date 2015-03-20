@@ -61,10 +61,15 @@ public class ContactImpl implements Contact {
             this.Id = Id;
             System.out.println("This Id is" + Id);
             for (int i = 0; i < IdList.size();i++) {
+
                 if (IdList.get(i) > Id) {
-                    IdList.add(i - 1, Id);
-                    System.out.println("IdList is " + IdList.size());
-                    break;
+                    if (i == 0){
+                        IdList.add(i, Id);
+                        break;
+                    }
+            //        IdList.add(i - 1, Id);
+            //        System.out.println("IdList is " + IdList.size());
+            //        break;
 
                 }
             }

@@ -35,20 +35,20 @@ public class ContactManagerImpl implements ContactManager {
                  * code to extract Contacts
                  */
                 if (line.charAt(0) == 'C'){
-                    String[] split = new String[4];
-                    int i = 0;
-                    int j = 0;
-                    for (int k = 0; k < line.length(); k++) {
-                        if (line.charAt(k) == ',') {
-                            split[i] = line.substring(j, k);
-                            i++;
-                            j = k + 1;
-                        }
-                        if (i == 3){
-                            split[i] = line.substring(j, line.length());
-                            break;
-                        }
-                    }
+                    String[] split = line.split(",");
+                //    int i = 0;
+                //    int j = 0;
+                //    for (int k = 0; k < line.length(); k++) {
+                //        if (line.charAt(k) == ',') {
+                //            split[i] = line.substring(j, k);
+                //            i++;
+                //            j = k + 1;
+                //        }
+                //        if (i == 3){
+                //            split[i] = line.substring(j, line.length());
+                //            break;
+                //        }
+                //    }
                     int conId = Integer.parseInt(split[1]);
                     Contact con = new ContactImpl(conId, split[2], split[3]);
                     System.out.println(con.getName() +" " + con.getId());
@@ -59,20 +59,20 @@ public class ContactManagerImpl implements ContactManager {
                  * code to extract Meetings
                  */
                 if (line.charAt(0) == 'M'){
-                    String[] split = new String[4];
-                    int i = 0;
-                    int j = 0;
-                    for (int k = 0; k < line.length(); k++) {
-                        if (line.charAt(k) == ',') {
-                            split[i] = line.substring(j, k);
-                            i++;
-                            j = k + 1;
-                        }
-                        if (i == 3){
-                            split[i] = line.substring(j, line.length());
-                            break;
-                        }
-                    }
+                    String[] split = line.split(",");
+           //         int i = 0;
+           //         int j = 0;
+           //         for (int k = 0; k < line.length(); k++) {
+           //             if (line.charAt(k) == ',') {
+           //                 split[i] = line.substring(j, k);
+           //                 i++;
+           //                 j = k + 1;
+           //             }
+           //             if (i == 3){
+           //                 split[i] = line.substring(j, line.length());
+           //                 break;
+           //             }
+           //         }
                     int MId = Integer.parseInt(split[1]);
                     String[] date = new String[5];
                     date = split[2].split("-");
@@ -84,12 +84,14 @@ public class ContactManagerImpl implements ContactManager {
                     String[] conmeet = new String[(split[3].length()+1)/2];
                     conmeet = split[3].split(" ");
                     int[] conmeetint = new int[conmeet.length];
+                    System.out.println("Conmeetn length is " + conmeet.length);
                     Contact[] ContactMeet = new ContactImpl[conmeet.length];
+                    String MeetNotes = "";
                     for (int l=0; l<conmeet.length; l++){
                         conmeetint[l] = Integer.parseInt(conmeet[l]);
                         for (int m = 0; m < Contacts.size();m++){
-                            if (conmeetint[l] == Contacts.get(l).getId()){
-                                ContactMeet[l] = Contacts.get(l);
+                            if (conmeetint[l] == Contacts.get(m).getId()){
+                                ContactMeet[l] = Contacts.get(m);
                                 break;
                             }
                         }
@@ -99,11 +101,14 @@ public class ContactManagerImpl implements ContactManager {
                         Meetings.add(Meet);
                     }
                     else{
-                        Meeting Meet = new PastMeetingImpl(MId, cal, "", ContactMeet);
+                        if (split.length == 5){
+                            MeetNotes = split[4];
+                        }
+                        Meeting Meet = new PastMeetingImpl(MId, cal, MeetNotes, ContactMeet);
                         Meetings.add(Meet);
                     }
-                    //  System.out.println(con.getName() +" " + con.getId());
-                    //  Contacts.add(con);
+// System.out.println(con.getName() +" " + con.getId());
+// Contacts.add(con);
                 }
             }
             in.close();
@@ -119,6 +124,7 @@ public class ContactManagerImpl implements ContactManager {
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         Contact[] MeetCon = ContactGetter.ConGet(contacts);
         Meeting NewFMeet = new FutureMeetingsImpl(date, MeetCon );
+        Meetings.add(NewFMeet);
         return 1;
     }
 
@@ -240,16 +246,54 @@ public class ContactManagerImpl implements ContactManager {
     @Override
     public void flush() {
 
-        File file = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager2.csv");
+        File file = new File("/Users/digibrose/CM2.csv");
         PrintWriter out = null;
         try {
+            int id;
+            int idM;
+            String name;
+            String notes;
+            String[] Date = new String[5];
             out = new PrintWriter(file);
             for (int i = 0; i < Contacts.size(); i++) {
-                int id = Contacts.get(i).getId();
-                String name = Contacts.get(i).getName();
-                String notes = Contacts.get(i).getNotes();
+                id = Contacts.get(i).getId();
+                name = Contacts.get(i).getName();
+                notes = Contacts.get(i).getNotes();
                 out.println("C," + id + "," + name + "," + notes);
-
+            }
+            for (int j = 0; j< Meetings.size();j++){
+                idM = Meetings.get(j).getId();
+                Date[0]= String.valueOf(Meetings.get(j).getDate().get(Calendar.YEAR));
+                Date[1]=String.valueOf(Meetings.get(j).getDate().get(Calendar.MONTH));
+                Date[2]=String.valueOf(Meetings.get(j).getDate().get(Calendar.DAY_OF_MONTH));
+                Date[3]=String.valueOf(Meetings.get(j).getDate().get(Calendar.HOUR_OF_DAY));
+                Date[4]=String.valueOf(Meetings.get(j).getDate().get(Calendar.MINUTE));
+                String Cal = Date[0] + "-" + Date[1] + "-" + Date[2] + "-" + Date[3] + "-" + Date[4];
+                String MCString = "";
+                String MNotes = "";
+                Contact[] MeetCon = ContactGetter.ConGet(Meetings.get(j).getContacts());
+                for (int k = 0; k < MeetCon.length; k++){
+                    if (MCString.length() == 0){
+                        System.out.println(MeetCon[k].getId());
+                        MCString = MCString + MeetCon[k].getId();
+                    }
+                    else {
+                        MCString = MCString + " " + MeetCon[k].getId();
+                    }
+                }
+                if (Meetings.get(j) instanceof FutureMeeting) {
+                    out.println("M," + idM + "," + Cal + "," + MCString);
+                }
+                else {
+                    PastMeetingImpl oldmeet = (PastMeetingImpl) Meetings.get(j);
+                    MNotes = oldmeet.getNotes();
+                    if (MNotes.length() > 0) {
+                        out.println("M," + idM + "," + Cal + "," + MCString + "," + MNotes);
+                    }
+                    else {
+                        out.println("M," + idM + "," + Cal + "," + MCString);
+                    }
+                }
             }
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
