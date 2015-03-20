@@ -14,6 +14,11 @@ public class ContactManagerImpl implements ContactManager {
     private List<Contact> Contacts = new LinkedList<Contact>();
     private List<Meeting> Meetings = new LinkedList<Meeting>();
 
+
+    /**
+     * Basic Constructor
+     */
+
     public ContactManagerImpl(){
         String Filename = "ContactManagerFile";
         ContactManagerFile = new File(Filename);
@@ -36,44 +41,22 @@ public class ContactManagerImpl implements ContactManager {
                  */
                 if (line.charAt(0) == 'C'){
                     String[] split = line.split(",");
-                //    int i = 0;
-                //    int j = 0;
-                //    for (int k = 0; k < line.length(); k++) {
-                //        if (line.charAt(k) == ',') {
-                //            split[i] = line.substring(j, k);
-                //            i++;
-                //            j = k + 1;
-                //        }
-                //        if (i == 3){
-                //            split[i] = line.substring(j, line.length());
-                //            break;
-                //        }
-                //    }
                     int conId = Integer.parseInt(split[1]);
                     Contact con = new ContactImpl(conId, split[2], split[3]);
                     System.out.println(con.getName() +" " + con.getId());
                     Contacts.add(con);
-              //      System.out.println("inputId " + con.getId());
                 }
                 /**
                  * code to extract Meetings
                  */
                 if (line.charAt(0) == 'M'){
                     String[] split = line.split(",");
-           //         int i = 0;
-           //         int j = 0;
-           //         for (int k = 0; k < line.length(); k++) {
-           //             if (line.charAt(k) == ',') {
-           //                 split[i] = line.substring(j, k);
-           //                 i++;
-           //                 j = k + 1;
-           //             }
-           //             if (i == 3){
-           //                 split[i] = line.substring(j, line.length());
-           //                 break;
-           //             }
-           //         }
                     int MId = Integer.parseInt(split[1]);
+
+                    /**
+                     * code to extract the date
+                     */
+
                     String[] date = new String[5];
                     date = split[2].split("-");
                     int[] cdate = new int[5];
@@ -81,8 +64,12 @@ public class ContactManagerImpl implements ContactManager {
                         cdate[k] = Integer.parseInt(date[k]);
                     }
                     Calendar cal = new GregorianCalendar(cdate[0], cdate[1], cdate[2], cdate[3], cdate[4]);
-                    String[] conmeet = new String[(split[3].length()+1)/2];
-                    conmeet = split[3].split(" ");
+
+                    /**
+                     * code to extract the contacts
+                     */
+
+                    String[] conmeet = split[3].split(" ");
                     int[] conmeetint = new int[conmeet.length];
                     System.out.println("Conmeetn length is " + conmeet.length);
                     Contact[] ContactMeet = new ContactImpl[conmeet.length];
@@ -96,6 +83,11 @@ public class ContactManagerImpl implements ContactManager {
                             }
                         }
                     }
+
+                    /**
+                     * code to decide presence of Notes
+                     */
+
                     if (cal.after(Calendar.getInstance())) {
                         Meeting Meet = new FutureMeetingsImpl(MId, cal, ContactMeet);
                         Meetings.add(Meet);
@@ -107,8 +99,6 @@ public class ContactManagerImpl implements ContactManager {
                         Meeting Meet = new PastMeetingImpl(MId, cal, MeetNotes, ContactMeet);
                         Meetings.add(Meet);
                     }
-// System.out.println(con.getName() +" " + con.getId());
-// Contacts.add(con);
                 }
             }
             in.close();
@@ -117,8 +107,14 @@ public class ContactManagerImpl implements ContactManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+    /**
+     * Code to add a future Meeting to the Contact Manager List
+     * @param contacts a list of contacts that will participate in the meeting
+     * @param date the date on which the meeting will take place
+     * @return int a value of 1 if successful
+     */
 
     @Override
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -128,11 +124,23 @@ public class ContactManagerImpl implements ContactManager {
         return 1;
     }
 
+    /**
+     * Code to return a past Meeting
+     * @param id the ID for the meeting
+     * @return PastMeeting
+     */
+
     @Override
     public PastMeeting getPastMeeting(int id) {
         PastMeeting PM = (PastMeetingImpl) Meetings.get(id);
         return PM;
     }
+
+    /**
+     * Code to return a future Meeting
+     * @param id the ID for the meeting
+     * @return FutureMeeting
+     */
 
     @Override
     public FutureMeeting getFutureMeeting(int id) {
@@ -142,10 +150,31 @@ public class ContactManagerImpl implements ContactManager {
         return FM;
     }
 
+    /**
+     * Code to get any Meeting
+     * @param id the ID for the meeting
+     * @return Meeting
+     */
+
     @Override
     public Meeting getMeeting(int id) {
-        return Meetings.get(id);
+
+        Meeting retMeet = null;
+        for (int i = 0; i < Meetings.size(); i++) {
+            System.out.println("Id is " + Meetings.get(i).getId());
+            if (id == Meetings.get(i).getId()) {
+                retMeet = Meetings.get(i);
+                break;
+            }
+        }
+        return retMeet;
     }
+
+    /**
+     * Method that takes a Contact as parameter and then return a list of future meetings with that contact
+     * @param contact one of the user’s contacts
+     * @return List
+     */
 
     @Override
     public List<Meeting> getFutureMeetingList(Contact contact) {
@@ -160,19 +189,31 @@ public class ContactManagerImpl implements ContactManager {
         return FutureMeetingList;
     }
 
+    /**
+     * Method to retrieve a list of future meetings from a specific calender day
+     * @param date the date
+     * @return List
+     */
+
     @Override
     public List<Meeting> getFutureMeetingList(Calendar date) {
         List<Meeting> FutureMeetingsList = new LinkedList<Meeting>();
         boolean sameday;
         for (int i=0; i < Meetings.size(); i++){
             sameday = Meetings.get(i).getDate().getWeekYear() == date.getWeekYear() && Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR);
-            System.out.println("Sameday is " + Meetings.get(i).getDate().get(Calendar.DAY_OF_YEAR));
             if (sameday){
                 FutureMeetingsList.add(Meetings.get(i));
             }
         }
         return FutureMeetingsList;
     }
+
+    /**
+     * Method to retrieve a list of past meetings for a specific Contact
+     * @param contact one of the user’s contacts
+     * @return List
+     */
+
 
     @Override
     public List<PastMeeting> getPastMeetingList(Contact contact) {
@@ -187,6 +228,13 @@ public class ContactManagerImpl implements ContactManager {
         return PastMeetingList;
     }
 
+    /**
+     * Method to add a new Past Meeting
+     * @param contacts a list of participants
+     * @param date the date on which the meeting took place
+     * @param text messages to be added about the meeting.
+     */
+
     @Override
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 
@@ -195,6 +243,12 @@ public class ContactManagerImpl implements ContactManager {
         Meetings.add(NPM);
 
     }
+
+    /**
+     * Method to add meeting notes to a past Meeting
+     * @param id the ID of the meeting
+     * @param text messages to be added about the meeting.
+     */
 
     @Override
     public void addMeetingNotes(int id, String text) {
@@ -205,12 +259,24 @@ public class ContactManagerImpl implements ContactManager {
             }
     }
 
+    /**
+     * Method to add a new contact
+     * @param name the name of the contact.
+     * @param notes notes to be added about the contact.
+     */
+
     @Override
     public void addNewContact(String name, String notes) {
         Contact NewContact = new ContactImpl(name, notes);
         Contacts.add(NewContact);
 
     }
+
+    /**
+     * Method to get a list of contacts from their ID's
+     * @param ids an arbitrary number of contact IDs
+     * @return Set
+     */
 
     @Override
     public Set<Contact> getContacts(int... ids) {
@@ -229,12 +295,16 @@ public class ContactManagerImpl implements ContactManager {
         return getConReturn;
     }
 
+    /**
+     * Method to get a set of Contacts with the same name
+     * @param name the string to search for
+     * @return Set
+     */
+
     @Override
     public Set<Contact> getContacts(String name) {
         Set<Contact> reqContacts = new HashSet<Contact>();
         for (int i = 0; i < Contacts.size(); i++ ){
-         //   System.out.println("getCon -" + Contacts.get(i).getName()+ "-");
-         //   System.out.println(name);
             if (Contacts.get(i).getName().equals(name)){
 
                 reqContacts.add(Contacts.get(i));
@@ -243,10 +313,13 @@ public class ContactManagerImpl implements ContactManager {
         return reqContacts;
     }
 
+    /**
+     * Method to write back to the file csv file
+     */
+
     @Override
     public void flush() {
 
-        File file = new File("/Users/digibrose/CM2.csv");
         PrintWriter out = null;
         try {
             int id;
@@ -254,27 +327,45 @@ public class ContactManagerImpl implements ContactManager {
             String name;
             String notes;
             String[] Date = new String[5];
-            out = new PrintWriter(file);
+            out = new PrintWriter(ContactManagerFile);
+
+            /**
+             * code to write out the contacts
+             */
             for (int i = 0; i < Contacts.size(); i++) {
                 id = Contacts.get(i).getId();
                 name = Contacts.get(i).getName();
                 notes = Contacts.get(i).getNotes();
                 out.println("C," + id + "," + name + "," + notes);
             }
+
+            /**
+             * Code to write out the Meetings
+             */
+
             for (int j = 0; j< Meetings.size();j++){
                 idM = Meetings.get(j).getId();
+
+                /**
+                 * Set up the date
+                 */
+
                 Date[0]= String.valueOf(Meetings.get(j).getDate().get(Calendar.YEAR));
                 Date[1]=String.valueOf(Meetings.get(j).getDate().get(Calendar.MONTH));
                 Date[2]=String.valueOf(Meetings.get(j).getDate().get(Calendar.DAY_OF_MONTH));
                 Date[3]=String.valueOf(Meetings.get(j).getDate().get(Calendar.HOUR_OF_DAY));
                 Date[4]=String.valueOf(Meetings.get(j).getDate().get(Calendar.MINUTE));
                 String Cal = Date[0] + "-" + Date[1] + "-" + Date[2] + "-" + Date[3] + "-" + Date[4];
+
+                /**
+                 * Set up meeting contacts
+                 */
+
                 String MCString = "";
-                String MNotes = "";
+
                 Contact[] MeetCon = ContactGetter.ConGet(Meetings.get(j).getContacts());
                 for (int k = 0; k < MeetCon.length; k++){
                     if (MCString.length() == 0){
-                        System.out.println(MeetCon[k].getId());
                         MCString = MCString + MeetCon[k].getId();
                     }
                     else {
@@ -284,9 +375,14 @@ public class ContactManagerImpl implements ContactManager {
                 if (Meetings.get(j) instanceof FutureMeeting) {
                     out.println("M," + idM + "," + Cal + "," + MCString);
                 }
+
+                /**
+                 * add notes as well if past meeting
+                 */
+
                 else {
                     PastMeetingImpl oldmeet = (PastMeetingImpl) Meetings.get(j);
-                    MNotes = oldmeet.getNotes();
+                    String MNotes = oldmeet.getNotes();
                     if (MNotes.length() > 0) {
                         out.println("M," + idM + "," + Cal + "," + MCString + "," + MNotes);
                     }

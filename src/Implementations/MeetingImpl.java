@@ -14,55 +14,64 @@ import java.util.Set;
 public class MeetingImpl implements Meeting {
 
     protected Set<Contact> ContactPresent = new HashSet<Contact>();
- //   private  static int MeetingCounter;
     protected int Id;
     protected Calendar date;
-
     protected static LinkedList<Integer> IdList = new LinkedList<Integer>();
+
+    /**
+     * Constructor Method
+     * @param date
+     * @param present
+     */
 
     public MeetingImpl(Calendar date, Contact... present){
         this.date = date;
         for (Contact item : present ) {
             ContactPresent.add(item);
         }
-      //  this.Id = MeetingCounter;
-      //  MeetingCounter++;
-
         int j = IdList.size();
-        System.out.println("present size is " + IdList.size());
         if (IdList.isEmpty()){
             this.Id = 0;
             IdList.add(0);
-            System.out.println("New Id0M is " + this.Id);
         }
         for (int i = 0; i < j; i++) {
             if (i != IdList.get(i )) {
-                System.out.println("compare " + i + " " + IdList.get(i));
                 this.Id = i;
                 IdList.add(i, i);
-                System.out.println("New Id is " + this.Id);
                 break;
             }
             if (i == j - 1) {
                 this.Id = IdList.size();
                 IdList.add(j);
-                System.out.println("New Id2 is " + this.Id);
                 break;
             }
-
         }
-
     }
+
+    /**
+     * Method to return Id
+     * @return int
+     */
 
     @Override
     public int getId() {
         return Id;
     }
 
+    /**
+     * method to return date
+     * @return Calendar
+     */
+
     @Override
     public Calendar getDate() {
         return date;
     }
+
+    /**
+     * Method to return Contact Set
+     * @return Set
+     */
 
     @Override
     public Set<Contact> getContacts() {

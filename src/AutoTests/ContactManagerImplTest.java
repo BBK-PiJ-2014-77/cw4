@@ -117,6 +117,7 @@ public class ContactManagerImplTest {
     public void testGetMeeting() {
         int expected = 1;
         int observed = CM.getMeeting(1).getId();
+     //   CM.flush();
         assertEquals(expected, observed);
     }
 
@@ -187,7 +188,7 @@ public class ContactManagerImplTest {
     public void testFlush() {
      //   CM.addNewContact("Harry", "Met Sally");
         CM.flush();
-        File Filein2 = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager2.csv");
+        File Filein2 = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
         boolean linechecker = false;
         try {
             BufferedReader in = new BufferedReader(new FileReader(Filein2));

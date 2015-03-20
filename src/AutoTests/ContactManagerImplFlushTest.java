@@ -23,7 +23,7 @@ public class ContactManagerImplFlushTest {
 
     @BeforeClass
     public static void setup() {
-        filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
+        filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager3.csv");
         CM = new ContactManagerImpl(filein);
 
     }

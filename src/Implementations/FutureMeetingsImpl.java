@@ -11,9 +11,22 @@ import java.util.Calendar;
  */
 public class FutureMeetingsImpl extends MeetingImpl implements FutureMeeting, Meeting {
 
+    /**
+     * Basic Constructor
+     * @param date
+     * @param present
+     */
+
     public FutureMeetingsImpl(Calendar date, Contact... present) {
         super(date, present);
     }
+
+    /**
+     * Contstructor with Id added as well to be used on startup
+     * @param id
+     * @param date
+     * @param present
+     */
 
     public FutureMeetingsImpl(int id, Calendar date, Contact... present){
         super(date, present);

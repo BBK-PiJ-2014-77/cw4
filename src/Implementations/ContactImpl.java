@@ -9,7 +9,6 @@ import java.util.LinkedList;
  */
 public class ContactImpl implements Contact {
 
-    static int NextId = 0;
     private int Id;
     private String name;
     private String notes;
@@ -18,40 +17,39 @@ public class ContactImpl implements Contact {
 
 
     public ContactImpl( String name, String notes) {
-        //   this.Id = NextId;
-        //   NextId = NextId + 1;
         this.name = name;
         this.notes = notes;
-        //   System.out.println("here list size is " + IdList.size());
 
         /**
          * code to assign a unique Id using a static linked list
          */
+
         int j = IdList.size();
-        System.out.println("present size is " + IdList.size());
         if (IdList.isEmpty()){
             this.Id = 0;
             IdList.add(0);
-            System.out.println("New Id0 is " + this.Id);
         }
         for (int i = 0; i < j; i++) {
             if (i != IdList.get(i )) {
-                System.out.println("compare " + i + " " + IdList.get(i));
                 this.Id = i;
                 IdList.add(i, i);
-                System.out.println("New Id is " + this.Id);
                 break;
             }
             if (i == j - 1) {
                 this.Id = IdList.size();
                 IdList.add(j);
-                System.out.println("New Id2 is " + this.Id);
                 break;
             }
 
         }
     }
 
+    /**
+     * Second Constructor Method to create Contacts with Id's assigned, only to be used on startup to read from file
+     * @param Id
+     * @param name
+     * @param notes
+     */
 
     public ContactImpl(int Id, String name, String notes){
         this.name = name;
@@ -59,41 +57,54 @@ public class ContactImpl implements Contact {
 
         if (!IdList.contains(Id)){
             this.Id = Id;
-            System.out.println("This Id is" + Id);
             for (int i = 0; i < IdList.size();i++) {
-
                 if (IdList.get(i) > Id) {
-                    if (i == 0){
+         //           if (i == 0){
                         IdList.add(i, Id);
                         break;
-                    }
-            //        IdList.add(i - 1, Id);
-            //        System.out.println("IdList is " + IdList.size());
-            //        break;
-
+           //         }
                 }
             }
                 if (Id >= IdList.size()){
                     IdList.add(Id);
-                    System.out.println("IDlist2point " + IdList.size());
                 }
             }
     }
+
+    /**
+     * Method to return ContactId
+     * @return int Id
+     */
 
     @Override
     public int getId() {
         return Id;
     }
 
+    /**
+     * Method to return Contact Name
+     * @return String Name
+     */
+
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Method to return Contact Notes
+     * @return String Notes
+     */
+
     @Override
     public String getNotes() {
         return notes;
     }
+
+    /**
+     * Method to add notes to Contact
+     * @param note the notes to be added
+     */
 
     @Override
     public void addNotes(String note) {
