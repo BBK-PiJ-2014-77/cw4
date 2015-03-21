@@ -117,7 +117,11 @@ public class ContactManagerImplTest {
     public void testGetMeeting() {
         int expected = 1;
         int observed = CM.getMeeting(1).getId();
-     //   CM.flush();
+   //     Calendar cal = new GregorianCalendar(2016, 11, 2, 14, 30);
+  //      CM.addNewPastMeeting(CM.getContacts(1),cal, " " );
+  //      CM.addFutureMeeting(CM.getContacts(1), cal);
+  //      System.out.println("Find meet 1 " + CM.getMeeting(1).getId());
+        CM.flush();
         assertEquals(expected, observed);
     }
 
@@ -183,6 +187,7 @@ public class ContactManagerImplTest {
         int observed = CM.getContacts("Zed").size();
         assertEquals(expected, observed);
     }
+
 
     @Test
     public void testFlush() {

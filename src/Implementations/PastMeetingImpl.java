@@ -19,8 +19,8 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
     }
 
     public PastMeetingImpl(int id, Calendar date, String Notes, Contact... present){
-        super(date, present);
-        this.Id = id;
+        super(id, date, present);
+    //    this.Id = id;
         this.Notes = Notes;
     }
 

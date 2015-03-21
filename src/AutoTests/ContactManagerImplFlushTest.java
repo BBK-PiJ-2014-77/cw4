@@ -23,7 +23,7 @@ public class ContactManagerImplFlushTest {
 
     @BeforeClass
     public static void setup() {
-        filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager3.csv");
+        filein = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager.csv");
         CM = new ContactManagerImpl(filein);
 
     }
@@ -41,7 +41,6 @@ public class ContactManagerImplFlushTest {
         Calendar Cal2 = new GregorianCalendar(2014, 3, 12, 13, 30);
         CM.addNewPastMeeting(FC, Cal2, "");
         CM.addMeetingNotes(1, "Notes Test");
-   //     CM.addMeetingNotes(CM.);
         CM.flush();
         File Filein2 = new File("/Users/digibrose/PiJ-work/day18/cw4/ContactManager2.csv");
         boolean linechecker = false;

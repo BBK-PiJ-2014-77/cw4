@@ -55,20 +55,23 @@ public class ContactImpl implements Contact {
         this.name = name;
         this.notes = notes;
 
-        if (!IdList.contains(Id)){
-            this.Id = Id;
-            for (int i = 0; i < IdList.size();i++) {
-                if (IdList.get(i) > Id) {
-         //           if (i == 0){
+        this.Id = Id;
+        if (!IdList.contains(Id)) {
+            int ILength = IdList.size();
+            if (!IdList.isEmpty()) {
+                for (int i = 0; i < ILength; i++) {
+                    if (IdList.get(i) > Id) {
                         IdList.add(i, Id);
                         break;
-           //         }
+                    }
+                    if (i == ILength - 1) {
+                        IdList.add(Id);
+                    }
                 }
+            } else {
+                IdList.add(Id);
             }
-                if (Id >= IdList.size()){
-                    IdList.add(Id);
-                }
-            }
+        }
     }
 
     /**

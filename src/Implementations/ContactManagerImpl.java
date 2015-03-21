@@ -132,7 +132,15 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public PastMeeting getPastMeeting(int id) {
-        PastMeeting PM = (PastMeetingImpl) Meetings.get(id);
+
+        PastMeeting PM = null;
+
+        for (int i = 0; i < Meetings.size(); i++) {
+            if (id == Meetings.get(i).getId()) {
+                PM = (PastMeetingImpl) Meetings.get(i);
+                break;
+            }
+        }
         return PM;
     }
 
@@ -145,8 +153,14 @@ public class ContactManagerImpl implements ContactManager {
     @Override
     public FutureMeeting getFutureMeeting(int id) {
 
+        FutureMeeting FM = null;
 
-        FutureMeeting FM = (FutureMeetingsImpl) Meetings.get(id);
+        for (int i = 0; i< Meetings.size(); i++) {
+            if (id == Meetings.get(i).getId()) {
+                FM = (FutureMeetingsImpl) Meetings.get(i);
+                break;
+            }
+        }
         return FM;
     }
 
@@ -161,7 +175,6 @@ public class ContactManagerImpl implements ContactManager {
 
         Meeting retMeet = null;
         for (int i = 0; i < Meetings.size(); i++) {
-            System.out.println("Id is " + Meetings.get(i).getId());
             if (id == Meetings.get(i).getId()) {
                 retMeet = Meetings.get(i);
                 break;
@@ -327,7 +340,9 @@ public class ContactManagerImpl implements ContactManager {
             String name;
             String notes;
             String[] Date = new String[5];
-            out = new PrintWriter(ContactManagerFile);
+
+            File outfile = new File("/Users/digibrose/CMtest.csv");
+            out = new PrintWriter(outfile);
 
             /**
              * code to write out the contacts

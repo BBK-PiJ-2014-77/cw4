@@ -16,7 +16,7 @@ public class MeetingImpl implements Meeting {
     protected Set<Contact> ContactPresent = new HashSet<Contact>();
     protected int Id;
     protected Calendar date;
-    protected static LinkedList<Integer> IdList = new LinkedList<Integer>();
+    public static LinkedList<Integer> IdList = new LinkedList<Integer>();
 
     /**
      * Constructor Method
@@ -46,6 +46,44 @@ public class MeetingImpl implements Meeting {
                 break;
             }
         }
+    }
+
+    public MeetingImpl(int Id, Calendar date, Contact... present){
+        this.date = date;
+        for (Contact item : present ) {
+            ContactPresent.add(item);
+        }
+        this.Id = Id;
+        if (!IdList.contains(Id)) {
+            int ILength = IdList.size();
+            if (!IdList.isEmpty()) {
+                for (int i = 0; i < ILength; i++) {
+                    if (IdList.get(i) > Id) {
+                        IdList.add(i, Id);
+                        break;
+                    }
+                    if (i == ILength - 1) {
+                        IdList.add(Id);
+                    }
+                }
+            } else {
+                IdList.add(Id);
+            }
+        }
+
+
+   //         for (int i = 0; i < IdList.size();i++) {
+   //             if (IdList.get(i) > Id) {
+   //                 IdList.add(i, Id);
+   //                 break;
+   //             }
+   //         }
+            //if (Id >= IdList.size()){
+   //             IdList.add(Id);
+        System.out.println("Added id is" + this.Id + " IdList is " + IdList.size() + " long");
+
+    //        }
+     //   }
     }
 
     /**
