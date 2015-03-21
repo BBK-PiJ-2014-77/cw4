@@ -13,7 +13,7 @@ public class ContactImpl implements Contact {
     private String name;
     private String notes;
 
-    static LinkedList<Integer> IdList = new LinkedList<Integer>();
+    private static LinkedList<Integer> IdList = new LinkedList<Integer>();
 
 
     public ContactImpl( String name, String notes) {

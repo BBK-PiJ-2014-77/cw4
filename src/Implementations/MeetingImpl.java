@@ -16,7 +16,7 @@ public class MeetingImpl implements Meeting {
     protected Set<Contact> ContactPresent = new HashSet<Contact>();
     protected int Id;
     protected Calendar date;
-    public static LinkedList<Integer> IdList = new LinkedList<Integer>();
+    private static LinkedList<Integer> IdList = new LinkedList<Integer>();
 
     /**
      * Constructor Method

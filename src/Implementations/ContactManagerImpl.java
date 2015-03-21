@@ -51,7 +51,6 @@ public class ContactManagerImpl implements ContactManager {
                     }
                     if (!conpresent) {
                         Contact con = new ContactImpl(conId, split[2], split[3]);
-                        System.out.println(con.getName() + " " + con.getId());
                         Contacts.add(con);
                     }
 

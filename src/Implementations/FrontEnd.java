@@ -43,13 +43,23 @@ public class FrontEnd {
             System.out.println("Type C to add a new contact or M to add a new meeting or G to get info on a meeting or N to add notes or X to exit" );
             String Input3 = in.nextLine();
             if (Input3.charAt(0) == 'C'){
-             ContactInput(in);
+                    ContactInput(in);
             }
             if (Input3.charAt(0) == 'M'){
-                MeetingInput(in);
+                try {
+                    MeetingInput(in);
+                }catch (NumberFormatException e){
+                    System.out.println("You need to put a number");
+                }
             }
             if (Input3.charAt(0) =='G'){
-                MeetingInfo(in);
+                try {
+                    MeetingInfo(in);
+                }catch (NullPointerException e){
+                    System.out.println("Doesn't exist");
+                }catch (NumberFormatException e){
+                    System.out.println("You need to put a number");
+                }
             }
             if (Input3.charAt(0) == 'N'){
                 Notes(in);
