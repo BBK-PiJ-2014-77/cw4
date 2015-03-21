@@ -21,8 +21,6 @@ public class FrontEnd {
 
     private static void launch() {
 
-
-        System.out.println("Hello Master, What is you Pleasure");
         System.out.println("Do you want to load up a CM file?");
         Scanner in = new Scanner(System.in);
         String Input1 = in.nextLine();
@@ -32,6 +30,9 @@ public class FrontEnd {
             File filein = new File(Input2);
             CM = new ContactManagerImpl(filein);
         }
+        if (Input1.charAt(0) =='N' || Input1.charAt(0) == 'n'){
+            CM = new ContactManagerImpl();
+        }
         boolean close = false;
 
         /**
@@ -40,10 +41,21 @@ public class FrontEnd {
 
         while (!close){
             System.out.println("What would you like to do?");
-            System.out.println("Type C to add a new contact or M to add a new meeting or G to get info on a meeting or N to add notes or X to exit" );
+            System.out.println("Type C to add or get info on a contact or M to add a new meeting or G to get info on a meeting or N to add notes or X to exit" );
             String Input3 = in.nextLine();
             if (Input3.charAt(0) == 'C'){
+                System.out.println("Would you like to Add a contact or get Info");
+                String Input4 = in.nextLine();
+                if (Input4.charAt(0) == 'A' || Input4.charAt(0) == 'a') {
                     ContactInput(in);
+                }
+                else if (Input4.charAt(0) == 'I' || Input4.charAt(0) == 'i'){
+                    try {
+                        ContactInfo(in);
+                    }catch (NumberFormatException e){
+                       System.out.println("You need to put a number");
+                    }
+                }
             }
             if (Input3.charAt(0) == 'M'){
                 try {
@@ -55,10 +67,12 @@ public class FrontEnd {
             if (Input3.charAt(0) =='G'){
                 try {
                     MeetingInfo(in);
-                }catch (NullPointerException e){
-                    System.out.println("Doesn't exist");
                 }catch (NumberFormatException e){
                     System.out.println("You need to put a number");
+                }catch (NullPointerException e){
+                    System.out.println("Doesn't exist");
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("That Id isn't valid");
                 }
             }
             if (Input3.charAt(0) == 'N'){
@@ -83,6 +97,44 @@ public class FrontEnd {
         CM.addNewContact(Input1, Input2);
         System.out.println(Input1 + " added");
         flushrequest(in);
+    }
+
+    /**
+     * Method to get Contact info
+     */
+
+    static private void ContactInfo(Scanner in){
+        System.out.println("Search by Name or Id");
+        String Input1 = in.nextLine();
+        if(Input1.charAt(0) == 'N' || Input1.charAt(0) == 'n'){
+            System.out.println("What name?");
+            String Input2 = in.nextLine();
+            Set<Contact> ConSet = CM.getContacts(Input2);
+            if (ConSet.isEmpty()){
+                System.out.println("Nobody with that name");
+            }
+            else {
+                Contact[] ConArray = ContactGetter.ConGet(ConSet);
+                for (int i = 0; i < ConSet.size(); i++) {
+                    System.out.println(ConArray[i].getId() + " " + ConArray[i].getName() + " " + ConArray[i].getNotes());
+                }
+            }
+        }
+        if(Input1.charAt(0) == 'I' || Input1.charAt(0) == 'i'){
+            System.out.println("What Id");
+            String Input2 = in.nextLine();
+            int in2 = Integer.parseInt(Input2);
+            Set<Contact> ConSet = CM.getContacts(in2);
+            if (ConSet.isEmpty()){
+                System.out.println("Nobody with that Id");
+            }
+            else {
+                Contact[] ConArray = ContactGetter.ConGet(ConSet);
+                for (int i = 0; i < ConSet.size(); i++) {
+                    System.out.println(ConArray[i].getId() + " " + ConArray[i].getName() + " " + ConArray[i].getNotes());
+                }
+            }
+        }
     }
 
     /**
@@ -115,16 +167,7 @@ public class FrontEnd {
              *if more than one id with same name then ask which one
              */
 
-            if (SiCon.size() > 1){
-                System.out.println("Which one? please choose an Id");
-                SiConArray = ContactGetter.ConGet(SiCon);
-                for (int i = 0;i < SiCon.size();i++){
-                    System.out.println(SiConArray[i].getId() + " " + SiConArray[i].getName() + " " + SiConArray[i].getNotes());
-                }
-                Input6 = in.nextLine();
-                int In6 = Integer.parseInt(Input6);
-                SiCon = CM.getContacts(In6);
-            }
+            SiCon = ConSizeChecker(in, SiCon);
             ConSet.addAll(SiCon);
             System.out.println("Do you want to add another? no to finish");
             String Input7 = in.nextLine();
@@ -163,8 +206,8 @@ public class FrontEnd {
 
     static private void MeetingInfo(Scanner in){
 
-        String Input1 = "";
-        String Input2 = "";
+        String Input1;
+        String Input2;
         int in2;
 
         System.out.println("Would you Like to search by Id, Date or Contact?");
@@ -206,15 +249,19 @@ public class FrontEnd {
             System.out.println("This will only find future meetings");
             Calendar cal = CalQuestions(in);
             List<Meeting> Meetings = CM.getFutureMeetingList(cal);
-            for (int i = 0;i < Meetings.size(); i++) {
-                Contact[] Conlist = ContactGetter.ConGet(Meetings.get(i).getContacts());
-                String CL = "";
-                for (int j = 0; j < Conlist.length; j++){
-                    CL = CL + Conlist[j].getName() + " ";
-                }
-                System.out.println(Meetings.get(i).getId() + " " + Meetings.get(i).getDate().getTime() + " " + CL);
-                CL = "";
+
+            if (Meetings.size() == 0){
+                System.out.println("Nothing with this date");
             }
+                for (int i = 0; i < Meetings.size(); i++) {
+                    Contact[] Conlist = ContactGetter.ConGet(Meetings.get(i).getContacts());
+                    String CL = "";
+                    for (int j = 0; j < Conlist.length; j++) {
+                        CL = CL + Conlist[j].getName() + " ";
+                    }
+                    System.out.println(Meetings.get(i).getId() + " " + Meetings.get(i).getDate().getTime() + " " + CL);
+                    CL = "";
+                }
         }
 
         /**
@@ -311,6 +358,21 @@ public class FrontEnd {
         int in5 = Integer.parseInt(Input5);
         Calendar cal = new GregorianCalendar(in1, in2, in3, in4, in5);
         return cal;
+    }
+
+    static private Set<Contact> ConSizeChecker(Scanner in, Set<Contact> SiCon){
+
+        if (SiCon.size() > 1){
+            System.out.println("Which one? please choose an Id");
+            Contact[] SiConArray = ContactGetter.ConGet(SiCon);
+            for (int i = 0;i < SiCon.size();i++){
+                System.out.println(SiConArray[i].getId() + " " + SiConArray[i].getName() + " " + SiConArray[i].getNotes());
+            }
+            String Input1 = in.nextLine();
+            int In1 = Integer.parseInt(Input1);
+            SiCon = CM.getContacts(In1);
+        }
+        return SiCon;
     }
 
 }

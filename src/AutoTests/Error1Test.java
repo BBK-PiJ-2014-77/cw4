@@ -60,4 +60,28 @@ public class Error1Test {
 
     }
 
+    /**
+     * Test to see whether you can add a past date to a future meeting
+     */
+    @Test
+    public void ErrorInputTest2(){
+
+        Calendar cal = new GregorianCalendar(2014, 2, 15, 12, 45);
+        int expected = 0;
+        int observed = CM.addFutureMeeting(CM.getContacts(1), cal);
+    //    System.out.println("Value is " + observed);
+        assertEquals(expected, observed);
+    }
+
+    /**
+     * Test to see what happens when you try to use a nonexistent contact
+     */
+
+    @Test
+    public void ErrorInputTest3(){
+
+
+
+    }
+
 }

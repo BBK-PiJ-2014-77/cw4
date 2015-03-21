@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class ContactManagerImpl implements ContactManager {
 
-    private File ContactManagerFile;
+    private File ContactManagerFile = null;
     private List<Contact> Contacts = new LinkedList<Contact>();
     private List<Meeting> Meetings = new LinkedList<Meeting>();
 
@@ -20,8 +20,7 @@ public class ContactManagerImpl implements ContactManager {
      */
 
     public ContactManagerImpl(){
-        String Filename = "ContactManagerFile";
-        ContactManagerFile = new File(Filename);
+
     }
 
     /**
@@ -135,10 +134,16 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-        Contact[] MeetCon = ContactGetter.ConGet(contacts);
-        Meeting NewFMeet = new FutureMeetingsImpl(date, MeetCon );
-        Meetings.add(NewFMeet);
-        return 1;
+
+        if (date.after(Calendar.getInstance())) {
+            Contact[] MeetCon = ContactGetter.ConGet(contacts);
+            Meeting NewFMeet = new FutureMeetingsImpl(date, MeetCon);
+            Meetings.add(NewFMeet);
+            return 1;
+        }else{
+            System.out.println("You can't have a past date for a future meeting");
+            return 0;
+        }
     }
 
     /**
@@ -325,7 +330,6 @@ public class ContactManagerImpl implements ContactManager {
                 getConReturn.add(Contacts.get(i));
             }
         }
-
         return getConReturn;
     }
 
@@ -361,6 +365,13 @@ public class ContactManagerImpl implements ContactManager {
             String name;
             String notes;
             String[] Date = new String[5];
+
+            if (ContactManagerFile == null){
+                System.out.println("Please give path for new csv file");
+                Scanner in = new Scanner(System.in);
+                String Input = in.nextLine();
+                ContactManagerFile = new File(Input);
+            }
 
             File outfile = ContactManagerFile;
             out = new PrintWriter(outfile);
