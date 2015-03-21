@@ -42,62 +42,80 @@ public class ContactManagerImpl implements ContactManager {
                 if (line.charAt(0) == 'C'){
                     String[] split = line.split(",");
                     int conId = Integer.parseInt(split[1]);
-                    Contact con = new ContactImpl(conId, split[2], split[3]);
-                    System.out.println(con.getName() +" " + con.getId());
-                    Contacts.add(con);
+                    boolean conpresent = false;
+                    for (int i = 0; i< Contacts.size(); i++){
+                        if (conId == Contacts.get(i).getId()){
+                            System.out.println("Repeated Id " + conId + " Ignored");
+                            conpresent = true;
+                        }
+                    }
+                    if (!conpresent) {
+                        Contact con = new ContactImpl(conId, split[2], split[3]);
+                        System.out.println(con.getName() + " " + con.getId());
+                        Contacts.add(con);
+                    }
+
                 }
                 /**
                  * code to extract Meetings
                  */
-                if (line.charAt(0) == 'M'){
+                if (line.charAt(0) == 'M') {
                     String[] split = line.split(",");
                     int MId = Integer.parseInt(split[1]);
-
-                    /**
-                     * code to extract the date
-                     */
-
-                    String[] date = new String[5];
-                    date = split[2].split("-");
-                    int[] cdate = new int[5];
-                    for (int k = 0; k < date.length; k++) {
-                        cdate[k] = Integer.parseInt(date[k]);
+                    boolean meetpresent = false;
+                    for (int i = 0; i < Meetings.size(); i++) {
+                        if (MId == Meetings.get(i).getId()) {
+                            System.out.println("Repeated Id " + MId + " Ignored");
+                            meetpresent = true;
+                        }
                     }
-                    Calendar cal = new GregorianCalendar(cdate[0], cdate[1], cdate[2], cdate[3], cdate[4]);
 
-                    /**
-                     * code to extract the contacts
-                     */
+                    if (!meetpresent) {
 
-                    String[] conmeet = split[3].split(" ");
-                    int[] conmeetint = new int[conmeet.length];
-                    System.out.println("Conmeetn length is " + conmeet.length);
-                    Contact[] ContactMeet = new ContactImpl[conmeet.length];
-                    String MeetNotes = "";
-                    for (int l=0; l<conmeet.length; l++){
-                        conmeetint[l] = Integer.parseInt(conmeet[l]);
-                        for (int m = 0; m < Contacts.size();m++){
-                            if (conmeetint[l] == Contacts.get(m).getId()){
-                                ContactMeet[l] = Contacts.get(m);
-                                break;
+                        /**
+                         * code to extract the date
+                         */
+
+                        String[] date = new String[5];
+                        date = split[2].split("-");
+                        int[] cdate = new int[5];
+                        for (int k = 0; k < date.length; k++) {
+                            cdate[k] = Integer.parseInt(date[k]);
+                        }
+                        Calendar cal = new GregorianCalendar(cdate[0], cdate[1], cdate[2], cdate[3], cdate[4]);
+
+                        /**
+                         * code to extract the contacts
+                         */
+
+                        String[] conmeet = split[3].split(" ");
+                        int[] conmeetint = new int[conmeet.length];
+                        Contact[] ContactMeet = new ContactImpl[conmeet.length];
+                        String MeetNotes = "";
+                        for (int l = 0; l < conmeet.length; l++) {
+                            conmeetint[l] = Integer.parseInt(conmeet[l]);
+                            for (int m = 0; m < Contacts.size(); m++) {
+                                if (conmeetint[l] == Contacts.get(m).getId()) {
+                                    ContactMeet[l] = Contacts.get(m);
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    /**
-                     * code to decide presence of Notes
-                     */
+                        /**
+                         * code to decide presence of Notes
+                         */
 
-                    if (cal.after(Calendar.getInstance())) {
-                        Meeting Meet = new FutureMeetingsImpl(MId, cal, ContactMeet);
-                        Meetings.add(Meet);
-                    }
-                    else{
-                        if (split.length == 5){
-                            MeetNotes = split[4];
+                        if (cal.after(Calendar.getInstance())) {
+                            Meeting Meet = new FutureMeetingsImpl(MId, cal, ContactMeet);
+                            Meetings.add(Meet);
+                        } else {
+                            if (split.length == 5) {
+                                MeetNotes = split[4];
+                            }
+                            Meeting Meet = new PastMeetingImpl(MId, cal, MeetNotes, ContactMeet);
+                            Meetings.add(Meet);
                         }
-                        Meeting Meet = new PastMeetingImpl(MId, cal, MeetNotes, ContactMeet);
-                        Meetings.add(Meet);
                     }
                 }
             }

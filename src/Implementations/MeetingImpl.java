@@ -70,20 +70,6 @@ public class MeetingImpl implements Meeting {
                 IdList.add(Id);
             }
         }
-
-
-   //         for (int i = 0; i < IdList.size();i++) {
-   //             if (IdList.get(i) > Id) {
-   //                 IdList.add(i, Id);
-   //                 break;
-   //             }
-   //         }
-            //if (Id >= IdList.size()){
-   //             IdList.add(Id);
-        System.out.println("Added id is" + this.Id + " IdList is " + IdList.size() + " long");
-
-    //        }
-     //   }
     }
 
     /**
