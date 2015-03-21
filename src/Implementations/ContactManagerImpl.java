@@ -341,7 +341,7 @@ public class ContactManagerImpl implements ContactManager {
             String notes;
             String[] Date = new String[5];
 
-            File outfile = new File("/Users/digibrose/CMtest.csv");
+            File outfile = ContactManagerFile;
             out = new PrintWriter(outfile);
 
             /**
