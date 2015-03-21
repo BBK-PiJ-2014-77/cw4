@@ -268,9 +268,13 @@ public class ContactManagerImpl implements ContactManager {
     @Override
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 
-        Contact[] PMContacts = ContactGetter.ConGet(contacts);
-        Meeting NPM = new PastMeetingImpl(date, text, PMContacts);
-        Meetings.add(NPM);
+        if (date.before(Calendar.getInstance())) {
+            Contact[] PMContacts = ContactGetter.ConGet(contacts);
+            Meeting NPM = new PastMeetingImpl(date, text, PMContacts);
+            Meetings.add(NPM);
+        }else{
+            System.out.println("You can't have a past meeting with a future date");
+        }
 
     }
 
