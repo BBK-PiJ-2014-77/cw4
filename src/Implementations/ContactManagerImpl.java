@@ -105,7 +105,7 @@ public class ContactManagerImpl implements ContactManager {
                          */
 
                         if (cal.after(Calendar.getInstance())) {
-                            Meeting Meet = new FutureMeetingsImpl(MId, cal, ContactMeet);
+                            Meeting Meet = new FutureMeetingImpl(MId, cal, ContactMeet);
                             Meetings.add(Meet);
                         } else {
                             if (split.length == 5) {
@@ -130,19 +130,20 @@ public class ContactManagerImpl implements ContactManager {
      * @param contacts a list of contacts that will participate in the meeting
      * @param date the date on which the meeting will take place
      * @return int a value of 1 if successful
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date) throws IllegalArgumentException {
 
         if (date.after(Calendar.getInstance())) {
             Contact[] MeetCon = ContactGetter.ConGet(contacts);
-            Meeting NewFMeet = new FutureMeetingsImpl(date, MeetCon);
+            Meeting NewFMeet = new FutureMeetingImpl(date, MeetCon);
             Meetings.add(NewFMeet);
             return 1;
         }else{
             System.out.println("You can't have a past date for a future meeting");
-            return 0;
+            throw new IllegalArgumentException() ;
         }
     }
 
@@ -150,10 +151,11 @@ public class ContactManagerImpl implements ContactManager {
      * Code to return a past Meeting
      * @param id the ID for the meeting
      * @return PastMeeting
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public PastMeeting getPastMeeting(int id) {
+    public PastMeeting getPastMeeting(int id) throws IllegalArgumentException {
 
         PastMeeting PM = null;
 
@@ -163,6 +165,10 @@ public class ContactManagerImpl implements ContactManager {
                 break;
             }
         }
+        if (PM == null){
+            throw new IllegalArgumentException();
+        }
+
         return PM;
     }
 
@@ -170,18 +176,22 @@ public class ContactManagerImpl implements ContactManager {
      * Code to return a future Meeting
      * @param id the ID for the meeting
      * @return FutureMeeting
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public FutureMeeting getFutureMeeting(int id) {
+    public FutureMeeting getFutureMeeting(int id) throws IllegalArgumentException  {
 
         FutureMeeting FM = null;
 
         for (int i = 0; i< Meetings.size(); i++) {
             if (id == Meetings.get(i).getId()) {
-                FM = (FutureMeetingsImpl) Meetings.get(i);
+                FM = (FutureMeetingImpl) Meetings.get(i);
                 break;
             }
+        }
+        if (FM == null){
+            throw new IllegalArgumentException();
         }
         return FM;
     }
@@ -190,10 +200,11 @@ public class ContactManagerImpl implements ContactManager {
      * Code to get any Meeting
      * @param id the ID for the meeting
      * @return Meeting
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public Meeting getMeeting(int id) {
+    public Meeting getMeeting(int id)throws IllegalArgumentException{
 
         Meeting retMeet = null;
         for (int i = 0; i < Meetings.size(); i++) {
@@ -202,6 +213,10 @@ public class ContactManagerImpl implements ContactManager {
                 break;
             }
         }
+        if (retMeet == null){
+            throw new IllegalArgumentException();
+        }
+
         return retMeet;
     }
 
@@ -209,16 +224,20 @@ public class ContactManagerImpl implements ContactManager {
      * Method that takes a Contact as parameter and then return a list of future meetings with that contact
      * @param contact one of the user’s contacts
      * @return List
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public List<Meeting> getFutureMeetingList(Contact contact) {
+    public List<Meeting> getFutureMeetingList(Contact contact) throws IllegalArgumentException{
         List<Meeting> FutureMeetingList = new LinkedList<Meeting>();
 
         for (int i=0;i< Meetings.size();i++){
             if (Meetings.get(i).getContacts().contains(contact) && Meetings.get(i).getDate().after(Calendar.getInstance())){
                 FutureMeetingList.add(Meetings.get(i));
             }
+        }
+        if (FutureMeetingList.isEmpty()){
+            throw new IllegalArgumentException();
         }
 
         return FutureMeetingList;
@@ -228,10 +247,11 @@ public class ContactManagerImpl implements ContactManager {
      * Method to retrieve a list of future meetings from a specific calender day
      * @param date the date
      * @return List
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public List<Meeting> getFutureMeetingList(Calendar date) {
+    public List<Meeting> getFutureMeetingList(Calendar date) throws IllegalArgumentException {
         List<Meeting> FutureMeetingsList = new LinkedList<Meeting>();
         boolean sameday;
         for (int i=0; i < Meetings.size(); i++){
@@ -240,6 +260,10 @@ public class ContactManagerImpl implements ContactManager {
                 FutureMeetingsList.add(Meetings.get(i));
             }
         }
+        if (FutureMeetingsList.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
         return FutureMeetingsList;
     }
 
@@ -247,17 +271,21 @@ public class ContactManagerImpl implements ContactManager {
      * Method to retrieve a list of past meetings for a specific Contact
      * @param contact one of the user’s contacts
      * @return List
+     * @throws java.lang.IllegalArgumentException
      */
 
 
     @Override
-    public List<PastMeeting> getPastMeetingList(Contact contact) {
+    public List<PastMeeting> getPastMeetingList(Contact contact) throws IllegalArgumentException {
         List<PastMeeting> PastMeetingList = new LinkedList<PastMeeting>();
 
         for (int i=0;i< Meetings.size();i++){
             if (Meetings.get(i).getContacts().contains(contact) && Meetings.get(i).getDate().before(Calendar.getInstance())){
                 PastMeetingList.add((PastMeeting) Meetings.get(i));
             }
+        }
+        if (PastMeetingList.isEmpty()){
+            throw new IllegalArgumentException();
         }
 
         return PastMeetingList;
@@ -268,10 +296,15 @@ public class ContactManagerImpl implements ContactManager {
      * @param contacts a list of participants
      * @param date the date on which the meeting took place
      * @param text messages to be added about the meeting.
+     * @throws java.lang.NullPointerException
      */
 
     @Override
-    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) throws NullPointerException{
+
+        if (contacts == null || date == null || text == null){
+            throw new NullPointerException();
+        }
 
         if (date.before(Calendar.getInstance())) {
             Contact[] PMContacts = ContactGetter.ConGet(contacts);
@@ -287,10 +320,17 @@ public class ContactManagerImpl implements ContactManager {
      * Method to add meeting notes to a past Meeting
      * @param id the ID of the meeting
      * @param text messages to be added about the meeting.
+     * @throws java.lang.NullPointerException
      */
 
     @Override
-    public void addMeetingNotes(int id, String text) {
+    public void addMeetingNotes(int id, String text) throws NullPointerException {
+
+
+        if (text == null){
+            throw new NullPointerException();
+        }
+
             for (int i = 0; i<Meetings.size();i++){
                 if (Meetings.get(i).getId() == id){
                     Meetings.set(i, new PastMeetingImpl(Meetings.get(i).getId(), Meetings.get(i).getDate(), text, ContactGetter.ConGet(Meetings.get(i).getContacts())));
@@ -302,10 +342,16 @@ public class ContactManagerImpl implements ContactManager {
      * Method to add a new contact
      * @param name the name of the contact.
      * @param notes notes to be added about the contact.
+     * @throws java.lang.NullPointerException
      */
 
     @Override
-    public void addNewContact(String name, String notes) {
+    public void addNewContact(String name, String notes) throws NullPointerException {
+
+        if (name == null || notes == null){
+            throw new NullPointerException();
+        }
+
         Contact NewContact = new ContactImpl(name, notes);
         Contacts.add(NewContact);
 
@@ -315,10 +361,11 @@ public class ContactManagerImpl implements ContactManager {
      * Method to get a list of contacts from their ID's
      * @param ids an arbitrary number of contact IDs
      * @return Set
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public Set<Contact> getContacts(int... ids) {
+    public Set<Contact> getContacts(int... ids) throws IllegalArgumentException {
 
         Set<Integer> idset = new HashSet<Integer>();
         for (Integer item : ids ) {
@@ -330,6 +377,11 @@ public class ContactManagerImpl implements ContactManager {
                 getConReturn.add(Contacts.get(i));
             }
         }
+
+        if (getConReturn.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
         return getConReturn;
     }
 
@@ -337,10 +389,11 @@ public class ContactManagerImpl implements ContactManager {
      * Method to get a set of Contacts with the same name
      * @param name the string to search for
      * @return Set
+     * @throws java.lang.IllegalArgumentException
      */
 
     @Override
-    public Set<Contact> getContacts(String name) {
+    public Set<Contact> getContacts(String name) throws IllegalArgumentException {
         Set<Contact> reqContacts = new HashSet<Contact>();
         for (int i = 0; i < Contacts.size(); i++ ){
             if (Contacts.get(i).getName().equals(name)){
@@ -348,6 +401,10 @@ public class ContactManagerImpl implements ContactManager {
                 reqContacts.add(Contacts.get(i));
             }
         }
+        if (reqContacts.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
         return reqContacts;
     }
 

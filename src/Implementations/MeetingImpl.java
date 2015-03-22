@@ -48,6 +48,13 @@ public class MeetingImpl implements Meeting {
         }
     }
 
+    /**
+     * Constructor method with Id to be used on reading csv file
+     * @param Id
+     * @param date
+     * @param present
+     */
+
     public MeetingImpl(int Id, Calendar date, Contact... present){
         this.date = date;
         for (Contact item : present ) {

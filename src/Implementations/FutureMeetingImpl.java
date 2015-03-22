@@ -9,7 +9,7 @@ import java.util.Calendar;
 /**
  * Created by digibrose on 16/03/2015.
  */
-public class FutureMeetingsImpl extends MeetingImpl implements FutureMeeting, Meeting {
+public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting, Meeting {
 
     /**
      * Basic Constructor
@@ -17,7 +17,7 @@ public class FutureMeetingsImpl extends MeetingImpl implements FutureMeeting, Me
      * @param present
      */
 
-    public FutureMeetingsImpl(Calendar date, Contact... present) {
+    public FutureMeetingImpl(Calendar date, Contact... present) {
         super(date, present);
     }
 
@@ -28,7 +28,7 @@ public class FutureMeetingsImpl extends MeetingImpl implements FutureMeeting, Me
      * @param present
      */
 
-    public FutureMeetingsImpl(int id, Calendar date, Contact... present){
+    public FutureMeetingImpl(int id, Calendar date, Contact... present){
         super(id, date, present);
      //   this.Id = id;
     }

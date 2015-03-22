@@ -30,7 +30,7 @@ public class FrontEnd {
             File filein = new File(Input2);
             CM = new ContactManagerImpl(filein);
         }
-        if (Input1.charAt(0) =='N' || Input1.charAt(0) == 'n'){
+        if (Input1.charAt(0) == 'N' || Input1.charAt(0) == 'n') {
             CM = new ContactManagerImpl();
         }
         boolean close = false;
@@ -39,50 +39,64 @@ public class FrontEnd {
          * Basic loop
          */
 
-        while (!close){
+        while (!close) {
             System.out.println("What would you like to do?");
-            System.out.println("Type C to add or get info on a contact or M to add a new meeting or G to get info on a meeting or N to add notes or X to exit" );
+            System.out.println("Type C to add or get info on a contact or M to add a new meeting or G to get info on a meeting or N to add notes or X to exit");
             String Input3 = in.nextLine();
-            if (Input3.charAt(0) == 'C'){
+            if (Input3.charAt(0) == 'C') {
                 System.out.println("Would you like to Add a contact or get Info");
                 String Input4 = in.nextLine();
                 if (Input4.charAt(0) == 'A' || Input4.charAt(0) == 'a') {
-                    ContactInput(in);
-                }
-                else if (Input4.charAt(0) == 'I' || Input4.charAt(0) == 'i'){
+                    try {
+                        ContactInput(in);
+                    } catch (NullPointerException e) {
+                        System.out.println("Invalid Input");
+                    }
+                } else if (Input4.charAt(0) == 'I' || Input4.charAt(0) == 'i') {
                     try {
                         ContactInfo(in);
-                    }catch (NumberFormatException e){
-                       System.out.println("You need to put a number");
+                    } catch (NumberFormatException e) {
+                        System.out.println("You need to put a number");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("That doesn't exist");
                     }
                 }
             }
-            if (Input3.charAt(0) == 'M'){
+            if (Input3.charAt(0) == 'M') {
                 try {
                     MeetingInput(in);
-                }catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.println("You need to put a number");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid Input");
                 }
             }
-            if (Input3.charAt(0) =='G'){
+            if (Input3.charAt(0) == 'G') {
                 try {
                     MeetingInfo(in);
-                }catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.println("You need to put a number");
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     System.out.println("Doesn't exist");
-                }catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("That Id isn't valid");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("That doesn't exist");
                 }
             }
-            if (Input3.charAt(0) == 'N'){
-                Notes(in);
+            if (Input3.charAt(0) == 'N') {
+                try {
+                    Notes(in);
+                } catch (NullPointerException e) {
+                    System.out.println("Invalid Input");
+                }
             }
-            if (Input3.charAt(0)  == 'X'){
-                close =  true;
+                if (Input3.charAt(0) == 'X') {
+                    flushrequest(in);
+                    close = true;
+                }
             }
         }
-    }
 
     /**
      * Method to point to and set up contact input
@@ -237,7 +251,7 @@ public class FrontEnd {
                 for (int i = 0; i < Conlist.length; i++){
                     CL = CL + Conlist[i].getName() + " ";
                 }
-                System.out.println(Meet.getId() + " " + Meet.getDate() + " " + CL);
+                System.out.println(Meet.getId() + " " + Meet.getDate().getTime() + " " + CL);
             }
         }
 
@@ -272,7 +286,7 @@ public class FrontEnd {
             System.out.println("Do you want to search for Future of Past meetings?");
             Input2 = in.nextLine();
             if (Input2.charAt(0) == 'F' || Input2.charAt(0) == 'f'){
-                System.out.println("What Id?");
+                System.out.println("What Contact?");
                 String Input3 = in.nextLine();
                 int in3 = Integer.parseInt(Input3);
                 List<Meeting> Meetings = CM.getFutureMeetingList(ContactGetter.ConGet(CM.getContacts(in3))[0]);
@@ -286,7 +300,7 @@ public class FrontEnd {
                 }
             }
             if (Input2.charAt(0) == 'P' || Input2.charAt(0) == 'p'){
-                System.out.println("What Id?");
+                System.out.println("What Contact?");
                 String Input3 = in.nextLine();
                 int in3 = Integer.parseInt(Input3);
                 List<PastMeeting> Meetings = CM.getPastMeetingList(ContactGetter.ConGet(CM.getContacts(in3))[0]);
